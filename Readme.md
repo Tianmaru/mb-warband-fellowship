@@ -8,7 +8,7 @@ To built the mod and install it for your copy of Mount and Blade: Warband, copy 
 Steam Workshop Version coming soon.
 
 ## Built with
-* [Mount&Blade Module System, modificated by Lav](https://forums.taleworlds.com/index.php?topic=324874.0)
+* [Mount&Blade Module System, modified by Lav](https://forums.taleworlds.com/index.php?topic=324874.0)
 * [Python 2.7](https://www.python.org/)
 
 ## Contributing
