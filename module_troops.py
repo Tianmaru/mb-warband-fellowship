@@ -961,9 +961,8 @@ troops = [
    0x00000000000c100739ce9c805d2f381300000000001cc7ad0000000000000000],
 
 ######## Fellowship #######################################################################################  
-  ["player2","Player 2","Player 2",tf_hero|tf_unmoveable_in_party_window,0,reserved,fac_commoners,
-   [itm_tabard,itm_nomad_boots, itm_sword_medieval_b_small],
-   str_4|agi_4|int_4|cha_4,wp(15),0,
+  ["player2","Player 2","Player 2",tf_hero|tf_unmoveable_in_party_window,0,reserved,fac_commoners,[],
+   str_10|agi_10|int_10|cha_10,wp(100),0,
    0x000000030100300f499d5b391b6db8d300000000001dc2e10000000000000000],
 ###########################################################################################################  
    

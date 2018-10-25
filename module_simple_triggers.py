@@ -3620,7 +3620,10 @@ simple_triggers = [
             (eq, "$disable_local_histories", 0),
             (eq, "$g_infinite_camping", 0),
             (try_for_range, ":npc", companions_begin, companions_end),
-                (main_party_has_troop, ":npc"),           
+                (main_party_has_troop, ":npc"),
+				# Fellowship # Disable player 2 background events
+				# (neq, ":npc", "trp_player2")
+				#################################################
                 (troop_slot_eq, ":npc", slot_troop_home_speech_delivered, 0),
                 (troop_get_slot, ":home", ":npc", slot_troop_home),
                 (gt, ":home", 0),

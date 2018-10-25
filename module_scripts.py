@@ -898,7 +898,8 @@ scripts = [
       (try_end),
 	  
 	  ### Fellowship ###################################################################################################
-	  # (troop_join, "trp_player2")
+	  (call_script, "script_recruit_troop_as_companion", "trp_player2") # hire player2 as companion to player party
+	  # slot_troop_occupation = slto_player_companion
 	  ######################################################################################################
 	  
     ]),
@@ -3996,6 +3997,9 @@ scripts = [
       (assign,":wage", 0),
       (try_begin),
         (this_or_next|eq, ":troop_id", "trp_player"),
+		# Fellowship # keep player2 wage at 0 ####################
+		(this_or_next|eq, ":troop_id", "trp_player2"),
+		#########################################################
         (eq, ":troop_id", "trp_kidnapped_girl"),
       (else_try),
         (is_between, ":troop_id", pretenders_begin, pretenders_end),
@@ -4033,6 +4037,9 @@ scripts = [
 
       (try_begin),
         (neq, ":troop_id", "trp_player"),
+		# Fellowship # set player2 wage minimum to 0 ####################
+		(neq, ":troop_id", "trp_player2"),
+		#########################################################
         (neq, ":troop_id", "trp_kidnapped_girl"),
         (neg|is_between, ":troop_id", pretenders_begin, pretenders_end),
         (val_max, ":wage", 1),
@@ -33475,24 +33482,6 @@ scripts = [
 
 # set strings
 
-######## Fellowship #######################################################################################  
-        (troop_set_slot, "trp_player2", slot_troop_morality_type, -1), # player 2
-        (troop_set_slot, "trp_player2", slot_troop_morality_value, 0),
-        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_type, -1),
-        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_value, 0),
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash_object, "trp_npc13"), # vs nizar
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash2_object, "trp_npc2"), # vs marnid
-        (troop_set_slot, "trp_player2", slot_troop_personalitymatch_object, "trp_npc3"),  # pro ymira
-        (troop_set_slot, "trp_player2", slot_troop_home, "p_town_6"), #Praven
-        (troop_set_slot, "trp_player2", slot_troop_payment_request, 0),
-		(troop_set_slot, "trp_player2", slot_troop_kingsupport_argument, argument_lords),
-		(troop_set_slot, "trp_player2", slot_troop_kingsupport_opponent, "trp_npc1"), #borcha
-		(troop_set_slot, "trp_player2", slot_troop_town_with_contacts, "p_town_4"), #reyvadin
-		(troop_set_slot, "trp_player2", slot_troop_original_faction, 0), #vaegirs
-		(troop_set_slot, "trp_player2", slot_lord_reputation_type, lrep_martial), #
-		
-####################################################################################################################   
-
         (troop_set_slot, "trp_npc1", slot_troop_morality_type, tmt_egalitarian),  #borcha
         (troop_set_slot, "trp_npc1", slot_troop_morality_value, 4),  #borcha
         (troop_set_slot, "trp_npc1", slot_troop_2ary_morality_type, tmt_aristocratic),  #borcha
@@ -33753,25 +33742,55 @@ scripts = [
 		(troop_set_slot, "trp_npc16", slot_troop_kingsupport_opponent, "trp_npc12"), #nizar
  		(troop_set_slot, "trp_npc16", slot_troop_town_with_contacts, "p_town_9"), #khudan
 		(troop_set_slot, "trp_npc16", slot_lord_reputation_type, lrep_roguish), #
+		
+		######## Fellowship #######################################################################################  
+        (troop_set_slot, "trp_player2", slot_troop_morality_type, -1), # player 2
+        (troop_set_slot, "trp_player2", slot_troop_morality_value, 0),
+        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_type, -1),
+        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_value, 0),
+        (troop_set_slot, "trp_player2", slot_troop_personalityclash_object, "trp_npc13"), # vs nizar
+        (troop_set_slot, "trp_player2", slot_troop_personalityclash2_object, "trp_npc2"), # vs marnid
+        (troop_set_slot, "trp_player2", slot_troop_personalitymatch_object, "trp_npc3"),  # pro ymira
+        (troop_set_slot, "trp_player2", slot_troop_home, "p_town_13"), #Rivacheg
+        (troop_set_slot, "trp_player2", slot_troop_payment_request, 0),
+		(troop_set_slot, "trp_player2", slot_troop_kingsupport_argument, argument_lords),
+		(troop_set_slot, "trp_player2", slot_troop_kingsupport_opponent, "trp_npc1"), #borcha
+		(troop_set_slot, "trp_player2", slot_troop_town_with_contacts, "p_town_4"), #reyvadin
+		(troop_set_slot, "trp_player2", slot_troop_original_faction, 0),
+		(troop_set_slot, "trp_player2", slot_lord_reputation_type, lrep_martial), #
+		(troop_set_slot, "trp_player2", slot_troop_home_speech_delivered, 1), # Disable player 2 home speech
+		
+		####################################################################################################################   
 
-
-
-        (store_sub, "$number_of_npc_slots", slot_troop_strings_end, slot_troop_intro),
-
-        (try_for_range, ":npc", companions_begin, companions_end),
-
-
-            (try_for_range, ":slot_addition", 0, "$number_of_npc_slots"),
-                (store_add, ":slot", ":slot_addition", slot_troop_intro),
+		# assign string ids for npc dialog
 				
+		# number_of_npc_slots = slot_troop_strings_end - slot_troop_intro
+        (store_sub, "$number_of_npc_slots", slot_troop_strings_end, slot_troop_intro),
+		# possible, because all troop slots are numbered in module_constants
+		# slot_troop_intro is 101st, slot_troop_strings_end is 141st slot, resulting in 40 npc slots
+		# for all companions
+        (try_for_range, ":npc", companions_begin, companions_end),
+			# for slot_addition in range(number_of_npc_slots):
+            (try_for_range, ":slot_addition", 0, "$number_of_npc_slots"),
+				# slot = slot_addition + slot_troop_intro
+                (store_add, ":slot", ":slot_addition", slot_troop_intro),
+				# iterate through all npc_slots
 				# Fellowship Change from 16 to 17 #
+				# string_addition = slot_addition * 17
                 (store_mul, ":string_addition", ":slot_addition", 17),
+				# skip string_ids from the other 17 npcs
 				###################################
+				# string = str_npc1_intro + string_addition
                 (store_add, ":string", "str_npc1_intro", ":string_addition"), 
-                (val_add, ":string", ":npc"),
+				# store string_id in string
+                # string = string + npc
+				(val_add, ":string", ":npc"),
+				# string = string - companions_begin
                 (val_sub, ":string", companions_begin),
-
+				# store proper string_id for current npc in string
+				# npc.slot = string
                 (troop_set_slot, ":npc", ":slot", ":string"),
+				# set dialog npc slot to string id
             (try_end),
         (try_end),
 		
