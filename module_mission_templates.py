@@ -32,6 +32,80 @@ from module_constants import *
 # 
 ####################################################################################################################
 
+# Fellowship #######################################################################################################
+# Triggers for Player 2
+common_init_player2 = (
+	ti_after_mission_start,0,ti_once,
+	[],
+	[
+		(display_message,"@Player is not alone anymore!"),
+		# (agent_set_slot, ":player2_id", slot_agent_is_in_scripted_mode, 1)
+	]
+)
+
+common_control_player2 = (
+	0,0,0,
+	[
+		(main_party_has_troop,"trp_player2"),
+		# (agent_is_alive, <agent_id>)
+	],
+	[
+		(assign, ":player2_id", -1),
+		(try_for_agents, ":agent_id"),
+			(agent_get_troop_id, ":agent_troop", ":agent_id"),
+			(eq,":agent_troop","trp_player2"),
+			(assign, ":player2_id", ":agent_id"),
+		(try_end),
+		(try_begin),
+			(neq,":player2_id",-1),
+			(agent_clear_scripted_mode, ":player2_id"),
+			(assign, ":move_x", 0),
+			(assign, ":move_y", 0),
+			(omit_key_once, key_up),
+			(try_begin),
+				(this_or_next|key_clicked, key_up),
+				(key_is_down, key_up),
+				(val_add, ":move_y", 10),
+			(try_end),
+			(try_begin),
+				(this_or_next|key_clicked, key_down),
+				(key_is_down, key_down),
+				(val_add, ":move_y", -10),
+			(try_end),
+			(try_begin),
+				(this_or_next|key_clicked, key_right),
+				(key_is_down, key_right),
+				(val_add, ":move_x", 10),
+			(try_end),
+			(try_begin),
+				(this_or_next|key_clicked, key_left),
+				(key_is_down, key_left),
+				(val_add, ":move_x", -10),
+			(try_end),
+			(try_begin),
+				(key_clicked, key_numpad_0),
+				(store_random_in_range, ":attack_dir",0, 3),
+				(agent_set_attack_action, ":player2_id", ":attack_dir", 0),
+			(try_end),
+			#(init_position, pos0),
+			#(position_set_x, pos0, ":move_x"),
+			#(position_set_y, pos0, ":move_y"),
+			(agent_get_position, pos0, ":player2_id"),
+			(position_move_x, pos0, ":move_x", 0),
+			(position_move_y, pos0, ":move_y", 0),
+			#(position_transform_position_to_parent, pos2, pos1, pos0),
+			(agent_set_scripted_destination_no_attack, ":player2_id", pos0, 1),
+			#(agent_force_rethink, ":player2_id"),
+		(try_end),
+	]
+)
+
+player2 = [common_init_player2, common_control_player2]
+# Triggers for top down camera
+
+top_down_camera = []
+####################################################################################################################
+
 pilgrim_disguise = [itm_pilgrim_hood,itm_pilgrim_disguise,itm_practice_staff, itm_throwing_daggers]
 af_castle_lord = af_override_horse | af_override_weapons| af_require_civilian
 
@@ -14702,3 +14776,7 @@ mission_templates = [
 
 
 ]
+
+# Fellowship add player2 triggers to all missions
+for mt in mission_templates:
+	mt[5].extend(player2)
