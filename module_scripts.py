@@ -19,6 +19,8 @@ from ID_animations import *
 # Each script record contns the following two fields:
 # 1) Script id: The prefix "script_" will be inserted when referencing scripts.
 # 2) Operation block: This must be a valid operation block. See header_operations.py for reference.
+#
+# cf_ prefix if script Can Fail, omit it for the identifier
 ####################################################################################################################
 
 
@@ -27932,7 +27934,7 @@ scripts = [
   ##  ]),
   
   
-  # script_get_first_agent_with_troop_id
+  # script_cf_get_first_agent_with_troop_id
   # Input: arg1 = troop_no
   # Output: agent_id
   ("cf_get_first_agent_with_troop_id",

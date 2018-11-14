@@ -33,77 +33,132 @@ from module_constants import *
 ####################################################################################################################
 
 # Fellowship #######################################################################################################
+# Each trigger contains the following fields:
+# 1) Check interval, 2) Delay interval, 3) Re-arm interval, 4) Conditions block (list), 5) Consequences block (list)
 # Triggers for Player 2
 common_init_player2 = (
 	ti_after_mission_start,0,ti_once,
 	[],
-	[
-		(display_message,"@Player is not alone anymore!"),
-		# (agent_set_slot, ":player2_id", slot_agent_is_in_scripted_mode, 1)
-	]
+	[	]
 )
 
 common_control_player2 = (
 	0,0,0,
 	[
-		(main_party_has_troop,"trp_player2"),
-		# (agent_is_alive, <agent_id>)
+		(main_party_has_troop, "trp_player2"),
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(assign, ":player2_no", reg0),
+		(agent_is_alive, ":player2_no"),
 	],
 	[
-		(assign, ":player2_id", -1),
-		(try_for_agents, ":agent_id"),
-			(agent_get_troop_id, ":agent_troop", ":agent_id"),
-			(eq,":agent_troop","trp_player2"),
-			(assign, ":player2_id", ":agent_id"),
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(assign, ":player2_no", reg0),
+		(agent_set_slot, ":player2_no", slot_agent_is_in_scripted_mode, 1),
+		#(agent_clear_scripted_mode, ":player2_no"),
+		(assign, ":move_x", 0),
+		(assign, ":move_y", 0),
+		(omit_key_once, key_up),
+		(try_begin),
+			(this_or_next|key_clicked, key_up),
+			(key_is_down, key_up),
+			(val_add, ":move_y", 10),
 		(try_end),
 		(try_begin),
-			(neq,":player2_id",-1),
-			(agent_clear_scripted_mode, ":player2_id"),
-			(assign, ":move_x", 0),
-			(assign, ":move_y", 0),
-			(omit_key_once, key_up),
-			(try_begin),
-				(this_or_next|key_clicked, key_up),
-				(key_is_down, key_up),
-				(val_add, ":move_y", 10),
-			(try_end),
-			(try_begin),
-				(this_or_next|key_clicked, key_down),
-				(key_is_down, key_down),
-				(val_add, ":move_y", -10),
-			(try_end),
-			(try_begin),
-				(this_or_next|key_clicked, key_right),
-				(key_is_down, key_right),
-				(val_add, ":move_x", 10),
-			(try_end),
-			(try_begin),
-				(this_or_next|key_clicked, key_left),
-				(key_is_down, key_left),
-				(val_add, ":move_x", -10),
-			(try_end),
-			(try_begin),
-				(key_clicked, key_numpad_0),
-				(store_random_in_range, ":attack_dir",0, 3),
-				(agent_set_attack_action, ":player2_id", ":attack_dir", 0),
-			(try_end),
-			#(init_position, pos0),
-			#(position_set_x, pos0, ":move_x"),
-			#(position_set_y, pos0, ":move_y"),
-			(agent_get_position, pos0, ":player2_id"),
-			(position_move_x, pos0, ":move_x", 0),
-			(position_move_y, pos0, ":move_y", 0),
-			#(position_transform_position_to_parent, pos2, pos1, pos0),
-			(agent_set_scripted_destination_no_attack, ":player2_id", pos0, 1),
-			#(agent_force_rethink, ":player2_id"),
+			(this_or_next|key_clicked, key_down),
+			(key_is_down, key_down),
+			(val_add, ":move_y", -10),
+		(try_end),
+		(try_begin),
+			(this_or_next|key_clicked, key_right),
+			(key_is_down, key_right),
+			(val_add, ":move_x", 10),
+		(try_end),
+		(try_begin),
+			(this_or_next|key_clicked, key_left),
+			(key_is_down, key_left),
+			(val_add, ":move_x", -10),
+		(try_end),
+		(try_begin),
+			(key_clicked, key_numpad_0),
+			(store_random_in_range, ":attack_dir",0, 3),
+			(agent_set_attack_action, ":player2_no", ":attack_dir", 0),
+		(try_end),
+		#(init_position, pos0),
+		#(position_set_x, pos0, ":move_x"),
+		#(position_set_y, pos0, ":move_y"),
+		(agent_get_position, pos0, ":player2_no"),
+		(position_move_x, pos0, ":move_x", 0),
+		(position_move_y, pos0, ":move_y", 0),
+		(assign, reg0, ":move_x"),
+		#(display_message,"@move x {reg0}"),
+		(assign, reg0, ":move_y"),
+		#(display_message,"@move y {reg0}"),
+		#(position_transform_position_to_parent, pos2, pos1, pos0),
+		# this works, but is not the pretty solution
+		(agent_set_position, ":player2_no", pos0),
+		#(agent_set_scripted_destination_no_attack, ":player2_no", pos0, 1),
+		#(agent_force_rethink, ":player2_no"),
 		(try_end),
 	]
 )
 
-player2 = [common_init_player2, common_control_player2]
-# Triggers for top down camera
+top_down_camera_init = (
+	ti_after_mission_start,0,ti_once,
+	[],
+	[
+		(call_script,"script_team_get_average_position_of_enemies", 0),
+		# (agent_get_team, ":enemy_team", ":enemy_agent"),
+		# rotate camera to enemies
+	]
+	)
+	
+top_down_camera = (
+	0,0,0,
+	[
+		(main_party_has_troop, "trp_player2"),
+		#(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+	],
+	[
+		(mission_cam_set_mode, 1),
+		(get_player_agent_no, ":player_no"),
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(assign, ":player2_no", reg0),
+		(agent_get_position, pos1, ":player_no"),
+		(agent_get_position, pos2, ":player2_no"),
+		(assign, ":cam_x", 0),
+		(assign, ":cam_y", 0),
+		(assign, ":cam_z", 0),
+		(assign, ":min_z", 1000),
+		(position_get_x, reg0, pos1),
+		(position_get_y, reg1, pos1),
+		(position_get_z, reg2, pos1),
+		(val_add,":cam_x", reg0),
+		(val_add,":cam_y", reg1),
+		(val_add,":cam_z", reg2),
+		(position_get_x, reg0, pos2),
+		(position_get_y, reg1, pos2),
+		(position_get_z, reg2, pos2),
+		(val_add,":cam_x", reg0),
+		(val_add,":cam_y", reg1),
+		(val_max,":cam_z", reg2),
+		(val_div,":cam_x", 2),
+		(val_div,":cam_y", 2),
+		(get_distance_between_positions, ":distance", pos1, pos2),
+		(val_max,":distance",":min_z"),
+		(val_add,":cam_z", ":distance"),
+		(init_position, pos0),
+		(position_set_x, pos0, ":cam_x"),
+		(position_set_y, pos0, ":cam_y"),
+		(position_set_z, pos0, ":cam_z"),
+		(position_rotate_x, pos0, -90),
+		(mission_cam_set_position, pos0),
+		#(mission_cam_get_aperture, reg0),
+		#(display_message, "@aperture {reg0}"),
+	]
+)
 
-top_down_camera = []
+player2 = [common_init_player2, common_control_player2, top_down_camera]
+
 ####################################################################################################################
 
 pilgrim_disguise = [itm_pilgrim_hood,itm_pilgrim_disguise,itm_practice_staff, itm_throwing_daggers]
