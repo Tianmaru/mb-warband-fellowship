@@ -36,13 +36,13 @@ from module_constants import *
 # Each trigger contains the following fields:
 # 1) Check interval, 2) Delay interval, 3) Re-arm interval, 4) Conditions block (list), 5) Consequences block (list)
 # Triggers for Player 2
-common_init_player2 = (
+player2_init = (
 	ti_after_mission_start,0,ti_once,
 	[],
 	[	]
 )
 
-common_control_player2 = (
+player2_control = (
 	0,0,0,
 	[
 		(main_party_has_troop, "trp_player2"),
@@ -51,6 +51,7 @@ common_control_player2 = (
 		(agent_is_alive, ":player2_no"),
 	],
 	[
+		(set_fixed_point_multiplier, 100), # use centimeters
 		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
 		(assign, ":player2_no", reg0),
 		(agent_set_slot, ":player2_no", slot_agent_is_in_scripted_mode, 1),
@@ -83,32 +84,63 @@ common_control_player2 = (
 			(store_random_in_range, ":attack_dir",0, 3),
 			(agent_set_attack_action, ":player2_no", ":attack_dir", 0),
 		(try_end),
-		#(init_position, pos0),
-		#(position_set_x, pos0, ":move_x"),
-		#(position_set_y, pos0, ":move_y"),
-		(agent_get_position, pos0, ":player2_no"),
+		
+		(init_position, pos0),
+		(mission_cam_get_position, pos1),
+		(position_get_rotation_around_x, ":cam_rot_x", pos1),
+		(store_sub, ":cam_rot_x", 0, ":cam_rot_x"),
+		(position_rotate_x, pos1, ":cam_rot_x"),
+		(position_get_rotation_around_z, ":cam_rot_z", pos1),
+		(assign, "$p2_log_2", ":cam_rot_z"),
+		(position_rotate_z, pos0, ":cam_rot_z", 1),
 		(position_move_x, pos0, ":move_x", 0),
 		(position_move_y, pos0, ":move_y", 0),
-		(assign, reg0, ":move_x"),
-		#(display_message,"@move x {reg0}"),
-		(assign, reg0, ":move_y"),
-		#(display_message,"@move y {reg0}"),
-		#(position_transform_position_to_parent, pos2, pos1, pos0),
-		# this works, but is not the pretty solution
-		(agent_set_position, ":player2_no", pos0),
+		(position_get_x, ":move_x", pos0),
+		(position_get_y, ":move_y", pos0),		
+		
+		(agent_get_position, pos0, ":player2_no"),
+		(position_move_x, pos0, ":move_x", 1),
+		(position_move_y, pos0, ":move_y", 1),
+		(agent_set_position, ":player2_no", pos0), # this works, but is not the pretty solution
 		#(agent_set_scripted_destination_no_attack, ":player2_no", pos0, 1),
 		#(agent_force_rethink, ":player2_no"),
-		(try_end),
 	]
+)
+
+player2_log = (
+	0,0,1,
+	[],
+	[	
+		(assign, reg1, "$p2_log_1"),
+		(assign, reg2, "$p2_log_2"),
+		(display_message, "@log1 = {reg1}, log2 = {reg2}"),
+	],
 )
 
 top_down_camera_init = (
 	ti_after_mission_start,0,ti_once,
-	[],
 	[
-		(call_script,"script_team_get_average_position_of_enemies", 0),
-		# (agent_get_team, ":enemy_team", ":enemy_agent"),
-		# rotate camera to enemies
+		(main_party_has_troop, "trp_player2"),
+	],
+	[	
+		# make north point to enemies
+		(get_player_agent_no, ":player_no"),
+		(agent_get_team, ":player_team", ":player_no"),
+		(agent_get_position, pos1, ":player_no"),
+		(call_script, "script_team_get_average_position_of_enemies", ":player_team"),
+		(copy_position, pos2, pos0),
+		(position_transform_position_to_local, pos2, pos1, pos2),
+		(position_set_z, pos2, 0),
+		(init_position, pos1),
+		(position_set_y, pos1, 1),
+		(get_angle_between_positions,":angle_z", pos1, pos2),
+		(convert_from_fixed_point, ":angle_z"),
+		(assign, "$p2_log_1", ":angle_z"),
+		(init_position, pos0),
+		# look down
+		(position_rotate_x, pos0, -90),
+		(position_rotate_z, pos0, ":angle_z", 1),
+		(mission_cam_set_position, pos0),	
 	]
 	)
 	
@@ -119,22 +151,28 @@ top_down_camera = (
 		#(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
 	],
 	[
-		(mission_cam_set_mode, 1),
-		(get_player_agent_no, ":player_no"),
-		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(set_fixed_point_multiplier, 100), # use centimeters
+		(mission_cam_set_mode, 1), # manual camera mode
+		(get_player_agent_no, ":player_no"), # id of player agent
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"), # id of player 2 agent
 		(assign, ":player2_no", reg0),
 		(agent_get_position, pos1, ":player_no"),
 		(agent_get_position, pos2, ":player2_no"),
+		(assign, ":dx", 0),
+		(assign, ":dy", 0),
 		(assign, ":cam_x", 0),
 		(assign, ":cam_y", 0),
 		(assign, ":cam_z", 0),
-		(assign, ":min_z", 1000),
+		# minimum height = 10 meters
+		(assign, ":z_min", 1000),
 		(position_get_x, reg0, pos1),
 		(position_get_y, reg1, pos1),
 		(position_get_z, reg2, pos1),
 		(val_add,":cam_x", reg0),
 		(val_add,":cam_y", reg1),
 		(val_add,":cam_z", reg2),
+		(val_add,":dx", reg0),
+		(val_add,":dy", reg1),
 		(position_get_x, reg0, pos2),
 		(position_get_y, reg1, pos2),
 		(position_get_z, reg2, pos2),
@@ -143,21 +181,36 @@ top_down_camera = (
 		(val_max,":cam_z", reg2),
 		(val_div,":cam_x", 2),
 		(val_div,":cam_y", 2),
-		(get_distance_between_positions, ":distance", pos1, pos2),
-		(val_max,":distance",":min_z"),
-		(val_add,":cam_z", ":distance"),
-		(init_position, pos0),
+		(val_sub,":dx",reg0),
+		(val_abs, ":dx"),
+		(val_sub,":dy",reg1),
+		(val_abs, ":dy"),
+		(val_max, ":dx", ":dy"),
+		
+		(assign, ":distance", ":dx"),
+		(val_add, ":distance", 300), # margin
+		(convert_to_fixed_point, ":distance"),
+		(val_div, ":distance", 2),
+		(assign, ":z_opt", 0),
+		# get field of view
+		(mission_cam_get_aperture, ":fov"),
+		(store_div, ":z_opt", ":fov", 2),
+		(convert_to_fixed_point, ":z_opt"),
+		(store_tan, ":z_opt", ":z_opt"),
+		(store_div, ":z_opt", ":distance", ":z_opt"),
+		# division makes it unnecessary to convert back from fixed point
+	
+		(val_max,":z_opt", ":z_min"),
+		(val_add,":cam_z", ":z_opt"),
+		(mission_cam_get_position, pos0),
 		(position_set_x, pos0, ":cam_x"),
 		(position_set_y, pos0, ":cam_y"),
 		(position_set_z, pos0, ":cam_z"),
-		(position_rotate_x, pos0, -90),
 		(mission_cam_set_position, pos0),
-		#(mission_cam_get_aperture, reg0),
-		#(display_message, "@aperture {reg0}"),
 	]
 )
 
-player2 = [common_init_player2, common_control_player2, top_down_camera]
+player2 = [player2_init, player2_control, top_down_camera_init, top_down_camera, player2_log]
 
 ####################################################################################################################
 

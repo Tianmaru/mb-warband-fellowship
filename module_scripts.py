@@ -900,8 +900,9 @@ scripts = [
       (try_end),
 	  
 	  ### Fellowship ###################################################################################################
-	  (call_script, "script_recruit_troop_as_companion", "trp_player2") # hire player2 as companion to player party
+	  (call_script, "script_recruit_troop_as_companion", "trp_player2"), # hire player2 as companion to player party
 	  # slot_troop_occupation = slto_player_companion
+	  #(assign, "$p2_key_forward", key_up),
 	  ######################################################################################################
 	  
     ]),
