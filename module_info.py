@@ -1,7 +1,7 @@
 # Point export_dir to the folder you will be keeping your module
 # Make sure you use forward slashes (/) and NOT backward slashes (\)
 
-export_dir = "F:/Spiele/SteamLibrary/steamapps/common/MountBlade Warband/Modules/Fellowship"
+export_dir = "/home/bjarne/.steam/steam/steamapps/common/MountBlade Warband/Modules/Fellowship"
 
 # Several possible variants for export_dir variable:
 
