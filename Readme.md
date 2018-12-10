@@ -1,7 +1,7 @@
 # mb-warband-fellowship
 
 Fellowship is an upcoming mod for the video game [Mount and Blade: Warband](https://www.taleworlds.com/en/Games/Warband). It will focus on local coop campaign gameplay.
-This repository is meant to be a backup copy for me and an example for other modders.
+This repository is meant to be a backup copy for me and to serve as an example for other modders.
 
 ## Installing
 To built the mod and install it for your copy of Mount and Blade: Warband, copy the "Native" module folder of the game and rename it, change export_dir in module_info.py to that new folders path and run build_module.bat.
