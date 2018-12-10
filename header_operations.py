@@ -754,7 +754,7 @@ party_set_next_battle_simulation_time = 1667  # (party_set_next_battle_simulatio
                                               # Defines the period of time (in hours) after which the battle must be simulated for the specified party for the next time. When a value <= 0 is passed, the combat simulation round is performed immediately.
 party_get_battle_opponent             = 1680  # (party_get_battle_opponent, <destination>, <party_id>)
                                               # When a party is engaged in battle with another party, returns it's opponent party. Otherwise returns -1.
-inflict_casualties_to_party_group     = 1697  # (inflict_casualties_to_party, <parent_party_id>, <damage_amount>, <party_id_to_add_causalties_to>), 
+inflict_casualties_to_party_group     = 1697  # (inflict_casualties_to_party, <parent_party_id>, <damage_amount>, <party_id_to_add_causalties_to>),
                                               # Delivers auto-calculated damage to the party (and all other parties attached to it). Killed troops are moved to another party to keep track of.
 party_end_battle                      =  108  # (party_end_battle, <party_no>),
                                               # Version 1.153+. UNTESTED. Supposedly ends the battle in which the party is currently participating.
@@ -903,7 +903,7 @@ troop_raise_proficiency                  = 1522  # (troop_raise_proficiency, <tr
                                                  # Increases troop weapon proficiency by the specified value. Value can be negative. Increase is subject to limits defined by Weapon Master skill. When used on non-hero troop, will affect all instances of that troop.
 troop_raise_proficiency_linear           = 1523  # (troop_raise_proficiency, <troop_id>, <proficiency_no>, <value>),
                                                  # Same as (troop_raise_proficiency), but does not take Weapon Master skill into account (i.e. can increase proficiencies indefinitely).
-troop_add_proficiency_points             = 1525  # (troop_add_proficiency_points, <troop_id>, <value>),                    
+troop_add_proficiency_points             = 1525  # (troop_add_proficiency_points, <troop_id>, <value>),
                                                  # Adds some proficiency points to a hero troop which can later be distributed by player.
 store_troop_health                       = 2175  # (store_troop_health, <destination>, <troop_id>, [absolute]), # set absolute to 1 to get actual health; otherwise this will return percentage health in range (0-100)
                                                  # Retrieves current troop health. Use absolute = 1 to retrieve actual number of hp points left, use absolute = 0 to retrieve a value in 0..100 range (percentage).
@@ -944,7 +944,7 @@ troop_add_items                          = 1535  # (troop_add_items, <troop_id>,
                                                  # Adds multiple items of specified type to the troop.
 troop_remove_items                       = 1536  # (troop_remove_items, <troop_id>, <item_id>, <number>),
                                                  # Removes multiple items of specified type from the troop. Total price of actually removed items will be stored in reg0.
-troop_loot_troop                         = 1539  # (troop_loot_troop, <target_troop>, <source_troop_id>, <probability>), 
+troop_loot_troop                         = 1539  # (troop_loot_troop, <target_troop>, <source_troop_id>, <probability>),
                                                  # Adds to target_troop's inventory some items from source_troop's equipment and inventory with some probability. Does not actually remove items from source_troop. Commonly used in Native to generate random loot after the battle.
 troop_get_inventory_capacity             = 1540  # (troop_get_inventory_capacity, <destination>, <troop_id>),
                                                  # Returns the total inventory capacity (number of inventory slots) for the specified troop. Note that this number will include equipment slots as well. Substract num_equipment_kinds (see header_items.py) to get the number of actual *inventory* slots.
@@ -1248,7 +1248,7 @@ music_set_situation      =  603  # (music_set_situation, <situation_type>),
                                  # Sets current situation(s) in the game (see mtf_* flags in header_music.py for reference) so the game engine can pick matching tracks from module_music.py. Use 0 to stop any currently playing music (it will resume when situation is later set to something).
 music_set_culture        =  604  # (music_set_culture, <culture_type>),
                                  # Sets current culture(s) in the game (see mtf_* flags in header_music.py for reference) so the game engine can pick matching tracks from module_music.py. Use 0 to stop any currently playing music (it will resume when cultures are later set to something).
-stop_all_sounds          =  609  # (stop_all_sounds, [options]), 
+stop_all_sounds          =  609  # (stop_all_sounds, [options]),
                                  # Stops all playing sounds. Version 1.153 options: 0 = stop only looping sounds, 1 = stop all sounds. Version 1.143 options: 0 = let current track finish, 1 = fade it out, 2 = stop it abruptly.
 store_last_sound_channel =  615  # (store_last_sound_channel, <destination>),
                                  # Version 1.153+. UNTESTED. Stores the sound channel used for the last sound operation.
@@ -1654,9 +1654,9 @@ question_box                        = 1121  # (question_box, <string_id>, [<yes_
                                             # Displays a popup window with the text of the question and two buttons (Yes and No by default, but can be overridden). When the player selects one of possible responses, a ti_on_question_answered trigger will be executed.
 tutorial_message                    = 1122  # (tutorial_message, <string_id>, [color], [auto_close_time]),
                                             # Displays a popup window with tutorial text stored in referenced string or string register. Use -1 to close any currently open tutorial box. Optional parameters allow you to define text color and time period after which the tutorial box will close automatically.
-tutorial_message_set_position       = 1123  # (tutorial_message_set_position, <position_x>, <position_y>), 
+tutorial_message_set_position       = 1123  # (tutorial_message_set_position, <position_x>, <position_y>),
                                             # Defines screen position for the tutorial box. Assumes screen size is 1000*750.
-tutorial_message_set_size           = 1124  # (tutorial_message_set_size, <size_x>, <size_y>), 
+tutorial_message_set_size           = 1124  # (tutorial_message_set_size, <size_x>, <size_y>),
                                             # Defines size of the tutorial box. Assumes screen size is 1000*750.
 tutorial_message_set_center_justify = 1125  # (tutorial_message_set_center_justify, <val>),
                                             # Sets tutorial box to be center justified (value = 1), or use positioning dictated by tutorial_message_set_position (value = 0).
@@ -1698,7 +1698,7 @@ entering_town                         =   36  # (entering_town, <town_id>),
                                               # Apparently deprecated.
 encountered_party_is_attacker         =   39  # (encountered_party_is_attacker),
                                               # Checks that the party encountered on the world map was following player (i.e. either player was trying to run away or at the very least this is a head-on clash).
-conversation_screen_is_active         =   42  # (conversation_screen_active),
+conversation_screen_is_active         =   42  # (conversation_screen_is_active),
                                               # Checks that the player is currently in dialogue with some agent. Can only be used in triggers of module_mission_templates.py file.
 in_meta_mission                       =   44  # (in_meta_mission),
                                               # Deprecated, do not use.
@@ -2110,7 +2110,7 @@ scene_prop_set_cur_hit_points               = 1820  # (scene_prop_set_cur_hit_po
                                                     # Version 1.153+. Sets current HP amount for scene prop.
 prop_instance_receive_damage                = 1877  # (prop_instance_receive_damage, <scene_prop_id>, <agent_id>, <damage_value>),
                                                     # Makes scene prop instance receive specified amount of damage from any arbitrary agent. Agent reference is apparently necessary to properly initialize ti_on_scene_prop_hit trigger parameters.
-prop_instance_refill_hit_points             = 1870  # (prop_instance_refill_hit_points, <scene_prop_id>), 
+prop_instance_refill_hit_points             = 1870  # (prop_instance_refill_hit_points, <scene_prop_id>),
                                                     # Restores hit points of a scene prop instance to their maximum value.
 scene_prop_get_team                         = 1817  # (scene_prop_get_team, <value>, <scene_prop_id>),
                                                     # Retrieves the team controlling the scene prop instance.
@@ -2267,7 +2267,7 @@ agent_is_alarmed                         = 1806  # (agent_is_alarmed, <agent_id>
                                                  # Checks that the agent is alarmed (in combat mode with weapon drawn).
 class_is_listening_order                 = 1775  # (class_is_listening_order, <team_no>, <sub_class>),
                                                  # Checks that the specified group of specified team is listening to player's orders.
-teams_are_enemies                        = 1788  # (teams_are_enemies, <team_no>, <team_no_2>), 
+teams_are_enemies                        = 1788  # (teams_are_enemies, <team_no>, <team_no_2>),
                                                  # Checks that the two teams are hostile to each other.
 agent_is_in_line_of_sight                = 1826  # (agent_is_in_line_of_sight, <agent_id>, <position_no>),
                                                  # Version 1.153+. Checks that the agent can be seen from specified position. Rotation of position register is not used (i.e. agent will be seen even if position is "looking" the other way).
@@ -2911,7 +2911,7 @@ team_get_faction                             =  458  # (team_get_faction, <desti
 
 multiplayer_clear_scene                      =  416  # (multiplayer_clear_scene),
                                                      #
-multiplayer_find_spawn_point                 =  425  # (multiplayer_find_spawn_point, <destination>, <team_no>, <examine_all_spawn_points>, <is_horseman>), 
+multiplayer_find_spawn_point                 =  425  # (multiplayer_find_spawn_point, <destination>, <team_no>, <examine_all_spawn_points>, <is_horseman>),
                                                      #
 set_spawn_effector_scene_prop_kind           =  426  # (set_spawn_effector_scene_prop_kind, <team_no>, <scene_prop_kind_no>),
                                                      # Specifies some scene prop kind as one of the teams' spawn effector, making players of that team more likely to spawn closer to the specified effector prop instances. Use -1 to disable spawn effector for a team.

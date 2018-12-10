@@ -48,17 +48,6 @@ player2_init = (
 		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
 		(assign, ":player2_no", reg0),
 		(agent_set_is_alarmed, ":player2_no", 0),
-
-		(assign, "$gk_p2_move_down", key_down),
-		(assign, "$gk_p2_move_right", key_right),
-		(assign, "$gk_p2_move_left", key_left),
-		(assign, "$gk_p2_move_up", key_up),
-		(assign, "$gk_p2_attack", key_numpad_7),
-		(assign, "$gk_p2_defend", key_numpad_9),
-		(assign, "$gk_p2_look_down", key_numpad_5),
-		(assign, "$gk_p2_look_right", key_numpad_6),
-		(assign, "$gk_p2_look_left", key_numpad_4),
-		(assign, "$gk_p2_look_up", key_numpad_8),
 	]
 )
 
@@ -132,18 +121,22 @@ player2_control = (
 			(key_is_down, "$gk_p2_look_up"),
 			(val_add, ":look_y", 1000),
 		(try_end),
+		# (try_begin),
+		# 	(key_clicked, "$gk_p2_attack"),
+		# 	(store_random_in_range, ":attack_dir",0, 3),
+		# 	(agent_set_attack_action, ":player2_no", ":attack_dir", 1),
+		# (try_end),
 		(try_begin),
 			(key_clicked, "$gk_p2_attack"),
 			(store_random_in_range, ":attack_dir",0, 3),
 			(agent_set_attack_action, ":player2_no", ":attack_dir", 0),
 		(try_end),
 		(try_begin),
-			(key_clicked, "$gk_p2_defend"),
+			(key_is_down, "$gk_p2_defend"),
 			(store_random_in_range, ":defend_dir",0, 3),
 			(agent_set_defend_action, ":player2_no", ":defend_dir", 0),
 		(try_end),
 
-		(init_position, pos0),
 		(mission_cam_get_position, pos1),
 		(position_get_rotation_around_x, ":cam_rot_x", pos1),
 		(store_sub, ":cam_rot_x", 0, ":cam_rot_x"),
@@ -152,7 +145,8 @@ player2_control = (
 		(store_sub, ":cam_rot_y", 0, ":cam_rot_y"),
 		(position_rotate_y, pos1, ":cam_rot_y"),
 		(position_get_rotation_around_z, ":cam_rot_z", pos1),
-		(assign, "$p2_log_2", ":cam_rot_z"),
+
+		(init_position, pos0),
 		(position_rotate_z, pos0, ":cam_rot_z", 1),
 		(position_move_x, pos0, ":move_x", 0),
 		(position_move_y, pos0, ":move_y", 0),
@@ -162,11 +156,23 @@ player2_control = (
 		(agent_get_position, pos0, ":player2_no"),
 		(position_move_x, pos0, ":move_x", 1),
 		(position_move_y, pos0, ":move_y", 1),
+
+		(init_position, pos1),
+		(position_rotate_z, pos1, ":cam_rot_z", 1),
+		(position_move_x, pos1, ":look_x", 0),
+		(position_move_y, pos1, ":look_y", 0),
+		(position_get_x, ":look_x", pos1),
+		(position_get_y, ":look_y", pos1),
+
+		(agent_get_position, pos1, ":player2_no"),
+		(position_move_x, pos1, ":look_x", 1),
+		(position_move_y, pos1, ":look_y", 1),
 		#(agent_set_position, ":player2_no", pos0), # this works, but is not the pretty solution
 		(try_begin),
 			(eq, ":horse", -1),
 			(agent_set_scripted_destination_no_attack, ":player2_no", pos0, 1), # for some reason only works for bigger distances
 		(end_try),
+		(agent_set_look_target_position, ":player2_no", pos1),
 		#(agent_force_rethink, ":player2_no"),
 	]
 )
@@ -185,6 +191,9 @@ top_down_camera_init = (
 	ti_after_mission_start,0,ti_once,
 	[
 		(main_party_has_troop, "trp_player2"),
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(assign, ":player2_no", reg0),
+		(agent_is_alive, ":player2_no"),
 	],
 	[
 		# make north point to enemies
@@ -199,7 +208,6 @@ top_down_camera_init = (
 		(position_set_y, pos1, 1),
 		(get_angle_between_positions,":angle_z", pos1, pos2),
 		(convert_from_fixed_point, ":angle_z"),
-		(assign, "$p2_log_1", ":angle_z"),
 		(init_position, pos0),
 		# look down
 		(position_rotate_x, pos0, -90),
@@ -212,7 +220,9 @@ top_down_camera = (
 	0,0,0,
 	[
 		(main_party_has_troop, "trp_player2"),
-		#(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		#(assign, ":player2_no", reg0),
+		#(agent_is_alive, ":player2_no"),
 	],
 	[
 		(set_fixed_point_multiplier, 100), # use centimeters
@@ -251,7 +261,7 @@ top_down_camera = (
 		(val_max, ":dx", ":dy"),
 
 		(assign, ":distance", ":dx"),
-		(val_add, ":distance", 300), # margin
+		(val_add, ":distance", 700), # margin
 		(convert_to_fixed_point, ":distance"),
 		(val_div, ":distance", 2),
 		(assign, ":z_opt", 0),
@@ -275,7 +285,62 @@ top_down_camera = (
 
 player2 = [player2_init, player2_control, top_down_camera_init, top_down_camera, player2_log]
 
-####################################################################################################################
+player2_adjust_controls = (
+	0,0,0,
+	[
+		(conversation_screen_is_active),
+		(store_conversation_troop, ":talk_troop"),
+		(eq, ":talk_troop", "trp_player2"),
+		(eq, "$player2_listening_for_input", 1),
+	],
+	[
+		(try_for_range, ":key_code", key_1, key_xbox_lstick),
+			(eq, "$player2_listening_for_input", 1),
+			(omit_key_once, ":key_code"),
+			(try_begin),
+				(key_clicked, ":key_code"),
+				(try_begin),
+					# Move down
+					(eq,"$player2_listening_for_input_key", 0x01),
+					(assign, "$gk_p2_move_down", ":key_code"),
+				(else_try),
+					# Move right
+					(eq,"$player2_listening_for_input_key", 0x02),
+					(assign, "$gk_p2_move_right", ":key_code"),
+				(else_try),
+					# Move left
+					(eq,"$player2_listening_for_input_key", 0x03),
+					(assign, "$gk_p2_move_left", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x04),
+					(assign, "$gk_p2_move_up", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x11),
+					(assign, "$gk_p2_attack", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x12),
+					(assign, "$gk_p2_defend", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x21),
+					(assign, "$gk_p2_look_up", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x22),
+					(assign, "$gk_p2_look_right", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x23),
+					(assign, "$gk_p2_look_left", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x24),
+					(assign, "$gk_p2_look_up", ":key_code"),
+				(end_try),
+				(assign, "$p2_log_1", ":key_code"),
+				(assign, "$p2_log_2", ":key_code"),
+				(assign, "$player2_listening_for_input", 0),
+			(end_try),
+		(end_try),
+	]
+)
+################################################################################
 
 pilgrim_disguise = [itm_pilgrim_hood,itm_pilgrim_disguise,itm_practice_staff, itm_throwing_daggers]
 af_castle_lord = af_override_horse | af_override_weapons| af_require_civilian
@@ -1779,7 +1844,10 @@ mission_templates = [
      (22,mtef_visitor_source,af_override_fullhelm,0,1,[]),(23,mtef_visitor_source,af_override_fullhelm,0,1,[]),(24,mtef_visitor_source,af_override_fullhelm,0,1,[]),(25,mtef_visitor_source,af_override_fullhelm,0,1,[]),(26,mtef_visitor_source,af_override_fullhelm,0,1,[]),
      (27,mtef_visitor_source,af_override_fullhelm,0,1,[]),(28,mtef_visitor_source,af_override_fullhelm,0,1,[]),(29,mtef_visitor_source,af_override_fullhelm,0,1,[]),(30,mtef_visitor_source,af_override_fullhelm,0,1,[]),(31,mtef_visitor_source,af_override_fullhelm,0,1,[]),
      ],
-    [],
+    [
+		player2_adjust_controls,
+		player2_log,
+	],
   ),
 
 #----------------------------------------------------------------
@@ -14948,6 +15016,7 @@ mission_templates = [
 
 ]
 
-# Fellowship add player2 triggers to all missions
+### FELLOWSHIP add player2 triggers to all missions
 for mt in mission_templates:
-	mt[5].extend(player2)
+	if mt[0] != "conversation_encounter":
+		mt[5].extend(player2)

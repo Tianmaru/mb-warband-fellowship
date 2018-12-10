@@ -32,3 +32,4 @@ python process_postfx.py
 
 echo -e "\n______________________________\n"
 echo "Script processing has ended."
+read -n1 -r -p "Press any key to exit..."

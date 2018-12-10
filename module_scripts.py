@@ -898,18 +898,30 @@ scripts = [
       (try_for_range, ":party_no", centers_begin, centers_end),
         (party_set_note_available, ":party_no", 1),
       (try_end),
-
-	  ### Fellowship ###################################################################################################
-      # init player2
-      (call_script, "script_recruit_troop_as_companion", "trp_player2"), # hire player2 as companion to player party
-      (try_begin),
-        (troop_set_face_key_from_current_profile, "trp_player2"), # set face
-      (end_try),
-	  # slot_troop_occupation = slto_player_companion
-	  #(assign, "$p2_key_forward", key_up),
-	  ######################################################################################################
-
     ]),
+
+### FELLOWSHIP #################################################################
+    ("player2_init",
+    [
+        (try_begin),
+            (neg|main_party_has_troop, "trp_player2"),
+            (call_script, "script_recruit_troop_as_companion", "trp_player2"),
+        (end_try),
+        (try_begin),
+            (troop_set_face_key_from_current_profile, "trp_player2"), # set face
+        (end_try),
+        (assign, "$gk_p2_move_down", key_down),
+        (assign, "$gk_p2_move_right", key_right),
+        (assign, "$gk_p2_move_left", key_left),
+        (assign, "$gk_p2_move_up", key_up),
+        (assign, "$gk_p2_attack", key_numpad_7),
+        (assign, "$gk_p2_defend", key_numpad_9),
+        (assign, "$gk_p2_look_down", key_numpad_5),
+        (assign, "$gk_p2_look_right", key_numpad_6),
+        (assign, "$gk_p2_look_left", key_numpad_4),
+        (assign, "$gk_p2_look_up", key_numpad_8),
+    ]),
+################################################################################
 
   #script_game_get_use_string
   # This script is called from the game engine for getting using information text
@@ -14682,6 +14694,9 @@ scripts = [
           (troop_is_hero, ":stack_troop"),
           (neg|is_between, ":stack_troop", pretenders_begin, pretenders_end),
           (neq, ":stack_troop", "trp_player"),
+          ### FELLOWSHIP # Don't remove player 2
+          (neq, ":stack_troop", "trp_player2"),
+          ######################################################################
           (eq, "$g_prison_heroes", 1),
           (eq, ":party", "p_main_party"),
           (store_random_in_range, ":succeed_escaping", 0, 2),
@@ -33755,16 +33770,12 @@ scripts = [
         (troop_set_slot, "trp_player2", slot_troop_morality_value, 0),
         (troop_set_slot, "trp_player2", slot_troop_2ary_morality_type, -1),
         (troop_set_slot, "trp_player2", slot_troop_2ary_morality_value, 0),
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash_object, "trp_npc13"), # vs nizar
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash2_object, "trp_npc2"), # vs marnid
-        (troop_set_slot, "trp_player2", slot_troop_personalitymatch_object, "trp_npc3"),  # pro ymira
         (troop_set_slot, "trp_player2", slot_troop_home, "p_town_13"), #Rivacheg
         (troop_set_slot, "trp_player2", slot_troop_payment_request, 0),
 		(troop_set_slot, "trp_player2", slot_troop_kingsupport_argument, argument_lords),
 		(troop_set_slot, "trp_player2", slot_troop_kingsupport_opponent, "trp_npc1"), #borcha
 		(troop_set_slot, "trp_player2", slot_troop_town_with_contacts, "p_town_4"), #reyvadin
 		(troop_set_slot, "trp_player2", slot_troop_original_faction, 0),
-		(troop_set_slot, "trp_player2", slot_lord_reputation_type, lrep_martial), #
 		(troop_set_slot, "trp_player2", slot_troop_home_speech_delivered, 1), # Disable player 2 home speech
 
 		####################################################################################################################
@@ -33782,9 +33793,8 @@ scripts = [
 				# slot = slot_addition + slot_troop_intro
                 (store_add, ":slot", ":slot_addition", slot_troop_intro),
 				# iterate through all npc_slots
-				# Fellowship Change from 16 to 17 #
 				# string_addition = slot_addition * 17
-                (store_mul, ":string_addition", ":slot_addition", 17),
+                (store_mul, ":string_addition", ":slot_addition", 16),
 				# skip string_ids from the other 17 npcs
 				###################################
 				# string = str_npc1_intro + string_addition
