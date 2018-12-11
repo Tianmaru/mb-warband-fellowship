@@ -1649,6 +1649,7 @@ dialogs = [
     [],
     "Move down.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@move down"),
         (assign, "$player2_listening_for_input_key", 0x01),
     ]],
 
@@ -1656,6 +1657,7 @@ dialogs = [
     [],
     "Move right.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@move right"),
         (assign, "$player2_listening_for_input_key", 0x02),
     ]],
 
@@ -1663,6 +1665,7 @@ dialogs = [
     [],
     "Move left.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@move left"),
         (assign, "$player2_listening_for_input_key", 0x03),
     ]],
 
@@ -1670,6 +1673,7 @@ dialogs = [
     [],
     "Move up.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@move up"),
         (assign, "$player2_listening_for_input_key", 0x04),
     ]],
 
@@ -1677,6 +1681,7 @@ dialogs = [
     [],
     "Attack.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@attack"),
         (assign, "$player2_listening_for_input_key", 0x11),
     ]],
 
@@ -1684,6 +1689,7 @@ dialogs = [
     [],
     "Defend.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@defend"),
         (assign, "$player2_listening_for_input_key", 0x12),
     ]],
 
@@ -1691,6 +1697,7 @@ dialogs = [
     [],
     "Look down.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@look down"),
         (assign, "$player2_listening_for_input_key", 0x21),
     ]],
 
@@ -1698,6 +1705,7 @@ dialogs = [
     [],
     "Look right.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@look right"),
         (assign, "$player2_listening_for_input_key", 0x22),
     ]],
 
@@ -1705,6 +1713,7 @@ dialogs = [
     [],
     "Look left.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@look left"),
         (assign, "$player2_listening_for_input_key", 0x23),
     ]],
 
@@ -1712,20 +1721,58 @@ dialogs = [
     [],
     "Look up.", "player2_controls_listen",
     [
+        (str_store_string, s5, "@look up"),
         (assign, "$player2_listening_for_input_key", 0x24),
     ]],
 
     [trp_player2, "player2_controls_listen",
     [
         (assign, "$player2_listening_for_input", 1),
+        (display_message, "@Press a key"),
     ],
-    "Show me how to do it!", "player2_controls_understood",
+    "Tell me how to {s5}, I am listening...", "player2_controls_understood",
     [
     ]],
 
     [trp_player2, "player2_controls_understood",
-    [],
-    "Got it!", "player2_controls_action",
+    [
+        (try_begin),
+            (eq,"$player2_listening_for_input_key", 0x01),
+            (assign, ":key_code", "$gk_p2_move_down"),
+        (else_try),
+            # Move right
+            (eq,"$player2_listening_for_input_key", 0x02),
+            (assign, ":key_code", "$gk_p2_move_right"),
+        (else_try),
+            # Move left
+            (eq,"$player2_listening_for_input_key", 0x03),
+            (assign, ":key_code", "$gk_p2_move_left"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x04),
+            (assign, ":key_code", "$gk_p2_move_up"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x11),
+            (assign, ":key_code", "$gk_p2_attack"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x12),
+            (assign, ":key_code", "$gk_p2_defend"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x21),
+            (assign, ":key_code", "$gk_p2_look_up"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x22),
+            (assign, ":key_code", "$gk_p2_look_right"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x23),
+            (assign, ":key_code", "$gk_p2_look_left"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x24),
+            (assign, ":key_code", "$gk_p2_look_up"),
+        (end_try),
+        (call_script, "script_key_get_name_by_key_code", ":key_code"),
+        (str_store_string_reg, s6, s0),
+    ],
+    "Got it, I will now {s5} by {s6}.", "player2_controls_action",
     [
     ]],
 
