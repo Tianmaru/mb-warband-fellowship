@@ -901,14 +901,10 @@ scripts = [
     ]),
 
 ### FELLOWSHIP #################################################################
-    # script_player2_init
-    # Intializes troop player 2
-    ("player2_init",
+    # script_player2_init_controls
+    # Intializes controls of player 2
+    ("player2_init_controls",
     [
-        (try_begin),
-            (neg|main_party_has_troop, "trp_player2"),
-            (call_script, "script_recruit_troop_as_companion", "trp_player2"),
-        (end_try),
         (try_begin),
             (troop_set_face_key_from_current_profile, "trp_player2"), # set face
         (end_try),
@@ -922,6 +918,15 @@ scripts = [
         (assign, "$gk_p2_look_right", key_numpad_6),
         (assign, "$gk_p2_look_left", key_numpad_4),
         (assign, "$gk_p2_look_up", key_numpad_8),
+    ]),
+
+    # script_player2_set_face
+    # sets the face of player 2 from current multiplayer profile
+    ("player2_set_face",
+    [
+        (try_begin),
+            (troop_set_face_key_from_current_profile, "trp_player2"), # set face
+        (end_try),
     ]),
 
     #script_key_get_name_by_key_code
