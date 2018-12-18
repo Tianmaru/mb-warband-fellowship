@@ -32,11 +32,9 @@ from module_constants import *
 #
 ####################################################################################################################
 
-# Fellowship #######################################################################################################
+# FELLOWSHIP ###################################################################
 # Each trigger contains the following fields:
-# 1) Check interval, 2) Delay interval, 3) Re-arm interval, 4) Conditions block (list), 5) Consequences block (list)
-# Triggers for Player 2
-player2_init = (
+fellowship_player2_init = (
 	ti_after_mission_start,0,ti_once,
 	[
 		(main_party_has_troop, "trp_player2"),
@@ -48,10 +46,12 @@ player2_init = (
 		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
 		(assign, ":player2_no", reg0),
 		(agent_set_is_alarmed, ":player2_no", 0),
+		(assign, "$fellowship_player2_item_slot", 0),
+		(options_get_damage_to_player, ":damage_multiplier"),
 	]
 )
 
-player2_control = (
+fellowship_player2_control = (
 	0,0,0,
 	[
 		(main_party_has_troop, "trp_player2"),
@@ -69,20 +69,24 @@ player2_control = (
 		(omit_key_once, "$gk_p2_move_up"),
 		(omit_key_once, "$gk_p2_attack"),
 		(omit_key_once, "$gk_p2_defend"),
+		(omit_key_once, "$gk_p2_shield"),
+		(omit_key_once, "$gk_p2_switch"),
 		(omit_key_once, "$gk_p2_look_down"),
 		(omit_key_once, "$gk_p2_look_right"),
 		(omit_key_once, "$gk_p2_look_left"),
 		(omit_key_once, "$gk_p2_look_up"),
-		(agent_get_speed, pos0, ":player2_no"),
-		(position_get_x, "$p2_log_1", pos0),
-		(position_get_y, "$p2_log_2", pos0),
-		#(agent_set_slot, ":player2_no", slot_agent_is_in_scripted_mode, 1),
-		#(agent_clear_scripted_mode, ":player2_no"),
+
+		(agent_get_horse, ":horse_no", ":player2_no"),
+		(agent_get_attack_action, ":attack_action", ":player2_no"),
+		(agent_get_action_dir, ":action_dir", ":player2_no"),
+		(mission_cam_get_position, pos0),
+		(call_script, "script_fellowship_get_global_rotation_around_z", pos0),
+		(assign, ":orientation", reg0),
+
 		(assign, ":move_x", 0),
 		(assign, ":move_y", 0),
 		(assign, ":look_x", 0),
 		(assign, ":look_y", 0),
-		(agent_get_horse, ":horse", ":player2_no"),
 
 		(try_begin),
 			(this_or_next|key_clicked, "$gk_p2_move_down"),
@@ -124,63 +128,76 @@ player2_control = (
 			(key_is_down, "$gk_p2_look_up"),
 			(val_add, ":look_y", 1000),
 		(try_end),
-		# (try_begin),
-		# 	(key_clicked, "$gk_p2_attack"),
-		# 	(store_random_in_range, ":attack_dir",0, 3),
-		# 	(agent_set_attack_action, ":player2_no", ":attack_dir", 1),
-		# (try_end),
 		(try_begin),
-			(key_clicked, "$gk_p2_attack"),
-			(store_random_in_range, ":attack_dir",0, 3),
-			(agent_set_attack_action, ":player2_no", ":attack_dir", 0),
+			(key_is_down, "$gk_p2_attack"),
+			(try_begin),
+				(eq, ":attack_action", 0),
+				(store_random_in_range, ":attack_dir",0, 3),
+				(agent_set_attack_action, ":player2_no", ":attack_dir", 1),
+			(try_end),
+		(else_try),
+			(this_or_next|key_clicked, "$gk_p2_attack"),
+			(eq,":attack_action", 1),
+			(neq,":action_dir", -1),
+			(agent_set_attack_action, ":player2_no", ":action_dir", 0),
 		(try_end),
 		(try_begin),
 			(key_is_down, "$gk_p2_defend"),
+			(agent_set_attack_action, ":player2_no", -2, 0), #cancel attack
 			(store_random_in_range, ":defend_dir",0, 3),
 			(agent_set_defend_action, ":player2_no", ":defend_dir", 0),
+		(else_try),
+			(agent_get_defend_action, ":defend_action", ":player2_no"),
+			(neq, ":defend_action", 0),
+			(agent_set_defend_action, ":player2_no", -2, 0),
 		(try_end),
+		(try_begin),
+			(key_clicked, "$gk_p2_shield"),
+			(agent_get_wielded_item, ":weapon", ":player2_no", 0),
+			(agent_set_wielded_item, ":player2_no", -1),
+			(agent_set_wielded_item, ":player2_no", ":weapon"),
+		(end_try),
+		(try_begin),
+			(key_clicked, "$gk_p2_switch"),
+			(val_add, "$fellowship_player2_item_slot", 1),
+			(val_mod, "$fellowship_player2_item_slot", 4),
+			(agent_get_item_slot, ":item_no", ":player2_no", "$fellowship_player2_item_slot"),
+			(agent_set_wielded_item, ":player2_no", ":item_no"),
+		(end_try),
 
-		(mission_cam_get_position, pos1),
-		(position_get_rotation_around_x, ":cam_rot_x", pos1),
-		(store_sub, ":cam_rot_x", 0, ":cam_rot_x"),
-		(position_rotate_x, pos1, ":cam_rot_x"),
-		(position_get_rotation_around_y, ":cam_rot_y", pos1),
-		(store_sub, ":cam_rot_y", 0, ":cam_rot_y"),
-		(position_rotate_y, pos1, ":cam_rot_y"),
-		(position_get_rotation_around_z, ":cam_rot_z", pos1),
 
 		(init_position, pos0),
-		(position_rotate_z, pos0, ":cam_rot_z", 1),
+		(position_rotate_z, pos0, ":orientation", 1),
 		(position_move_x, pos0, ":move_x", 0),
 		(position_move_y, pos0, ":move_y", 0),
 		(position_get_x, ":move_x", pos0),
 		(position_get_y, ":move_y", pos0),
 
-		(agent_get_position, pos0, ":player2_no"),
-		(position_move_x, pos0, ":move_x", 1),
-		(position_move_y, pos0, ":move_y", 1),
-
-		(init_position, pos1),
-		(position_rotate_z, pos1, ":cam_rot_z", 1),
-		(position_move_x, pos1, ":look_x", 0),
-		(position_move_y, pos1, ":look_y", 0),
-		(position_get_x, ":look_x", pos1),
-		(position_get_y, ":look_y", pos1),
-
 		(agent_get_position, pos1, ":player2_no"),
-		(position_move_x, pos1, ":look_x", 1),
-		(position_move_y, pos1, ":look_y", 1),
+		(position_move_x, pos1, ":move_x", 1),
+		(position_move_y, pos1, ":move_y", 1),
+
+		(init_position, pos0),
+		(position_rotate_z, pos0, ":orientation", 1),
+		(position_move_x, pos0, ":look_x", 0),
+		(position_move_y, pos0, ":look_y", 0),
+		(position_get_x, ":look_x", pos0),
+		(position_get_y, ":look_y", pos0),
+
+		(agent_get_position, pos2, ":player2_no"),
+		(position_move_x, pos2, ":look_x", 1),
+		(position_move_y, pos2, ":look_y", 1),
 		#(agent_set_position, ":player2_no", pos0), # this works, but is not the pretty solution
 		(try_begin),
-			(eq, ":horse", -1),
-			(agent_set_scripted_destination_no_attack, ":player2_no", pos0, 1), # for some reason only works for bigger distances
+			(eq, ":horse_no", -1),
+			(agent_set_scripted_destination_no_attack, ":player2_no", pos1, 1), # for some reason only works for bigger distances
 		(end_try),
-		(agent_set_look_target_position, ":player2_no", pos1),
+		(agent_set_look_target_position, ":player2_no", pos2),
 		#(agent_force_rethink, ":player2_no"),
 	]
 )
 
-player2_log = (
+fellowship_player2_log = (
 	0,0,1,
 	[],
 	[
@@ -190,7 +207,7 @@ player2_log = (
 	],
 )
 
-top_down_camera_init = (
+fellowship_camera_init = (
 	ti_after_mission_start,0,ti_once,
 	[
 		(main_party_has_troop, "trp_player2"),
@@ -220,7 +237,7 @@ top_down_camera_init = (
 	]
 	)
 
-top_down_camera = (
+fellowship_camera = (
 	0,0,0,
 	[
 		(main_party_has_troop, "trp_player2"),
@@ -287,9 +304,102 @@ top_down_camera = (
 	]
 )
 
-player2 = [player2_init, player2_control, top_down_camera_init, top_down_camera, player2_log]
 
-player2_adjust_controls = (
+fellowship_player_control = (
+	0,0,0,
+	[
+		(neg|main_hero_fallen, 0),
+		(main_party_has_troop, "trp_player2"),
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+	],
+	[
+		(set_fixed_point_multiplier, 100),
+		(get_player_agent_no, ":player_no"),
+
+		(omit_key_once, gk_move_forward),
+		(omit_key_once, gk_move_backward),
+		(omit_key_once, key_a),
+		(omit_key_once, gk_move_right),
+		(omit_key_once, gk_attack),
+		(omit_key_once, gk_defend),
+
+		(agent_get_horse, ":horse_no", ":player_no"),
+		(mission_cam_get_position, pos0),
+		(call_script, "script_fellowship_get_global_rotation_around_z", pos0),
+		(assign, ":orientation", reg0),
+
+		(assign, ":move_x", 0),
+		(assign, ":move_y", 0),
+
+		(try_begin),
+			(this_or_next|game_key_clicked, gk_move_backward),
+			(game_key_is_down, gk_move_backward),
+			(val_add, ":move_y", -1000),
+		(try_end),
+		(try_begin),
+			(this_or_next|game_key_clicked, gk_move_right),
+			(game_key_is_down, gk_move_right),
+			(val_add, ":move_x", 1000),
+		(try_end),
+		(try_begin),
+			(this_or_next|game_key_clicked, gk_move_left),
+			(game_key_is_down, gk_move_left),
+			(val_add, ":move_x", -1000),
+		(try_end),
+		(try_begin),
+			(this_or_next|game_key_clicked, gk_move_forward),
+			(game_key_is_down, gk_move_forward),
+			(val_add, ":move_y", 1000),
+		(try_end),
+		(try_begin),
+			(game_key_is_down, gk_defend),
+			(store_random_in_range, ":defend_dir", 0, 3),
+			(agent_set_defend_action, ":player_no", ":defend_dir", 0),
+		(try_end),
+
+		(assign, "$p2_log_1", ":move_x"),
+		(assign, "$p2_log_2", ":move_y"),
+
+		(init_position, pos0),
+		(position_rotate_z, pos0, ":orientation", 1),
+		(position_move_x, pos0, ":move_x", 0),
+		(position_move_y, pos0, ":move_y", 0),
+		(position_get_x, ":move_x", pos0),
+		(position_get_y, ":move_y", pos0),
+
+		(agent_get_position, pos1, ":player_no"),
+		(position_move_x, pos1, ":move_x", 1),
+		(position_move_y, pos1, ":move_y", 1),
+
+		(mouse_get_position, pos0),
+		(mouse_get_world_projection, pos3, pos2),
+
+		(try_begin),
+			(eq, ":horse_no", -1),
+			(agent_set_scripted_destination_no_attack, ":player_no", pos1, 1), # for some reason only works for bigger distances
+		(end_try),
+		(agent_set_look_target_position, ":player_no", pos2),
+	]
+)
+
+fellowship_battle_ui_init = (
+	ti_after_mission_start, 0, 0,
+	[
+		(main_party_has_troop, "trp_player2"),
+		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(neg|is_presentation_active, "prsnt_fellowship_healthbar"),
+		(neg|is_presentation_active, "prsnt_fellowship_crosshair"),
+		(neg|is_presentation_active, "prsnt_battle"),
+	],
+	[
+		(start_presentation, "prsnt_fellowship_healthbar"),
+		(start_presentation, "prsnt_fellowship_crosshair"),
+	]
+)
+
+player2 = [fellowship_player2_init, fellowship_player2_control, fellowship_camera_init, fellowship_camera, fellowship_player_control, fellowship_battle_ui_init, fellowship_player2_log]
+
+fellowship_player2_control_edit = (
 	0,0,0,
 	[
 		(conversation_screen_is_active),
@@ -324,6 +434,12 @@ player2_adjust_controls = (
 				(else_try),
 					(eq,"$player2_listening_for_input_key", 0x12),
 					(assign, "$gk_p2_defend", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x13),
+					(assign, "$gk_p2_shield", ":key_code"),
+				(else_try),
+					(eq,"$player2_listening_for_input_key", 0x14),
+					(assign, "$gk_p2_switch", ":key_code"),
 				(else_try),
 					(eq,"$player2_listening_for_input_key", 0x21),
 					(assign, "$gk_p2_look_up", ":key_code"),
@@ -1848,8 +1964,8 @@ mission_templates = [
      (27,mtef_visitor_source,af_override_fullhelm,0,1,[]),(28,mtef_visitor_source,af_override_fullhelm,0,1,[]),(29,mtef_visitor_source,af_override_fullhelm,0,1,[]),(30,mtef_visitor_source,af_override_fullhelm,0,1,[]),(31,mtef_visitor_source,af_override_fullhelm,0,1,[]),
      ],
     [
-		player2_adjust_controls,
-		player2_log,
+		fellowship_player2_control_edit,
+		fellowship_player2_log,
 	],
   ),
 
@@ -2677,7 +2793,13 @@ mission_templates = [
       common_battle_check_victory_condition,
       common_battle_victory_display,
 
-      (1, 4, ti_once, [(main_hero_fallen)],
+      (1, 4, ti_once,
+	[
+		(main_hero_fallen),
+		# FELLOWSHIP
+		# Battle is only lost if player 2 has fallen too
+		(call_script,"script_cf_fellowship_player2_fallen"),
+	],
           [
               (assign, "$pin_player_fallen", 1),
               (str_store_string, s5, "str_retreat"),

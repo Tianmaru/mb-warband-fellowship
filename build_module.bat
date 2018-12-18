@@ -28,6 +28,7 @@
 "C:\Program Files\Python27\python.exe" process_dialogs.py
 "C:\Program Files\Python27\python.exe" process_global_variables_unused.py
 "C:\Program Files\Python27\python.exe" process_postfx.py
+"C:\Program Files\Python27\python.exe" process_assets.py
 echo.
 echo ______________________________
 echo.

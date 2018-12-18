@@ -29,6 +29,7 @@ python process_simple_triggers.py
 python process_dialogs.py
 python process_global_variables_unused.py
 python process_postfx.py
+python process_assets.py
 
 echo -e "\n______________________________\n"
 echo "Script processing has ended."

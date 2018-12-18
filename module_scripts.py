@@ -914,6 +914,8 @@ scripts = [
         (assign, "$gk_p2_move_up", key_up),
         (assign, "$gk_p2_attack", key_numpad_7),
         (assign, "$gk_p2_defend", key_numpad_9),
+        (assign, "$gk_p2_shield", key_numpad_minus),
+        (assign, "$gk_p2_switch", key_numpad_plus),
         (assign, "$gk_p2_look_down", key_numpad_5),
         (assign, "$gk_p2_look_right", key_numpad_6),
         (assign, "$gk_p2_look_left", key_numpad_4),
@@ -1313,6 +1315,38 @@ scripts = [
         (end_try),
     ]
     ),
+
+# script_cf_fellowship_player2_fallen
+# will pass, if agent of trp_player2 has fallen or main party has no trp_player2
+# will fail, if agent of trp_player2 is still alive
+    ("cf_fellowship_player2_fallen",
+    [
+        (assign, ":player2_fallen", 1),
+        (try_begin),
+        	(main_party_has_troop, "trp_player2"),
+            (call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+            (assign, ":player2_no", reg0),
+            (agent_is_alive, ":player2_no"),
+            (assign, ":player2_fallen", 0),
+        (end_try),
+        (assign, reg0, ":player2_fallen"),
+        (eq, reg0, 1),
+    ]),
+
+# script_fellowship_get_global_rotation_around_z
+# get the global z rotation of pos0
+# INPUT: None
+# OUTPUT: reg0
+    ("fellowship_get_global_rotation_around_z",
+    [
+		(position_get_rotation_around_x, ":rot_x", pos0),
+		(store_sub, ":rot_x", 0, ":rot_x"),
+		(position_rotate_x, pos0, ":rot_x"),
+		(position_get_rotation_around_y, ":rot_y", pos0),
+		(store_sub, ":rot_y", 0, ":rot_y"),
+		(position_rotate_y, pos0, ":rot_y"),
+		(position_get_rotation_around_z, reg0, pos0),
+    ]),
 ################################################################################
 
   #script_game_get_use_string
@@ -34162,9 +34196,9 @@ scripts = [
         (troop_set_slot, "trp_player2", slot_troop_morality_value, 0),
         (troop_set_slot, "trp_player2", slot_troop_2ary_morality_type, -1),
         (troop_set_slot, "trp_player2", slot_troop_2ary_morality_value, 0),
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash_object, "trp_npc15"), #klethi
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash2_object, "trp_npc1"), #klethi - borcha
-        (troop_set_slot, "trp_player2", slot_troop_personalitymatch_object, "trp_npc7"),  #deshavi - klethi
+        (troop_set_slot, "trp_player2", slot_troop_personalityclash_object, "trp_Dranton"),
+        (troop_set_slot, "trp_player2", slot_troop_personalityclash2_object, "trp_Kradus"),
+        (troop_set_slot, "trp_player2", slot_troop_personalitymatch_object, "trp_Xerina"),
         (troop_set_slot, "trp_player2", slot_troop_home, "p_town_13"), #Rivacheg
         (troop_set_slot, "trp_player2", slot_troop_payment_request, 0),
 		(troop_set_slot, "trp_player2", slot_troop_kingsupport_argument, argument_lords),

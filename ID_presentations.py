@@ -43,3 +43,5 @@ prsnt_budget_report = 41
 prsnt_game_before_quit = 42
 prsnt_multiplayer_duel_start_counter = 43
 prsnt_player2_init = 44
+prsnt_fellowship_crosshair = 45
+prsnt_fellowship_healthbar = 46

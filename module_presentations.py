@@ -12028,4 +12028,73 @@ presentations = [
             (try_end),
         ]),
   ]),
-  ]
+
+# prsnt_fellowship_crosshair
+# crosshair for player 1 and healthbar for player 2
+("fellowship_crosshair", prsntf_read_only|prsntf_manual_end_only, 0,
+    [
+        (ti_on_presentation_load,
+        [
+            (set_fixed_point_multiplier, 1000),
+            (presentation_set_duration, 999999),
+            (mouse_get_position, pos0),
+            (position_get_x, ":crosshair_x", pos0),
+            (position_get_y, ":crosshair_y", pos0),
+
+            # (create_progress_overlay, "$prsnt_player2_battle_healthbar", 0, 100),
+            # (position_set_x, pos1, 500),
+            # (position_set_y, pos1, 750),
+            # (overlay_set_size, "$prsnt_player2_battle_healthbar", pos1),
+            # (position_set_x, pos1, 925),
+            # (position_set_y, pos1, 35),
+            # (overlay_set_position, "$prsnt_player2_battle_healthbar", pos1),
+
+            (create_mesh_overlay, "$prsnt_fellowship_crosshair_mesh", "mesh_fellowship_crosshair"),
+            (position_set_x, pos1, 1000),
+            (position_set_y, pos1, 1000),
+            (overlay_set_size, "$prsnt_fellowship_crosshair_mesh", pos1),
+            (position_set_x, pos1, ":crosshair_x"),
+            (position_set_y, pos1, ":crosshair_y"),
+            (overlay_set_position, "$prsnt_fellowship_crosshair_mesh", pos1),
+            (overlay_set_alpha, "$prsnt_fellowship_crosshair_mesh", 0x80),
+            #(overlay_set_additional_render_height, "$prsnt_player2_battle_crosshair", 1),
+        ]),
+
+        (ti_on_presentation_run,
+        [
+            #(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+            #(assign, ":player2_no", reg0),
+            #(store_agent_hit_points, reg1, ":player2_no", 0),
+    		#(overlay_set_val, "$prsnt_player2_battle_healthbar", reg1),
+
+            (mouse_get_position, pos0),
+            (overlay_set_position, "$prsnt_fellowship_crosshair_mesh", pos0),
+        ]),
+    ]),
+
+    ("fellowship_healthbar", prsntf_read_only|prsntf_manual_end_only, 0,
+        [
+            (ti_on_presentation_load,
+            [
+                (set_fixed_point_multiplier, 1000),
+                (presentation_set_duration, 999999),
+
+                (create_progress_overlay, "$prsnt_fellowship_healthbar_progress", 0, 100),
+                (position_set_x, pos1, 500),
+                (position_set_y, pos1, 750),
+                (overlay_set_size, "$prsnt_fellowship_healthbar_progress", pos1),
+                (position_set_x, pos1, 925),
+                (position_set_y, pos1, 35),
+                (overlay_set_position, "$prsnt_fellowship_healthbar_progress", pos1),
+            ]),
+
+            (ti_on_presentation_run,
+            [
+                (call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+                (assign, ":player2_no", reg0),
+                (store_agent_hit_points, reg1, ":player2_no", 0),
+        		(overlay_set_val, "$prsnt_fellowship_healthbar_progress", reg1),
+            ]),
+        ]),
+# End: Pesentations
+]

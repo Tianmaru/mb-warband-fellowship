@@ -1607,7 +1607,7 @@ dialogs = [
 
     [trp_player2,"player2_trade",
     [],
-    "Gimme something good!", "do_player2_trade",
+    "Very well, it's all here...", "do_player2_trade",
     [
         (change_screen_equip_other),
     ]],
@@ -1624,7 +1624,7 @@ dialogs = [
 
     [trp_player2,"view_player2_char_requested",
     [],
-    "Well, I got lots of them!", "do_player2_view_char",
+    "All right, let me tell you...", "do_player2_view_char",
     [
         (change_screen_view_character),
     ]],
@@ -1695,6 +1695,22 @@ dialogs = [
 
     [trp_player2|plyr, "player2_controls_action",
     [],
+    "Unequip shield.", "player2_controls_listen",
+    [
+        (str_store_string, s5, "@unequip shield"),
+        (assign, "$player2_listening_for_input_key", 0x13),
+    ]],
+
+    [trp_player2|plyr, "player2_controls_action",
+    [],
+    "Switch weapons.", "player2_controls_listen",
+    [
+        (str_store_string, s5, "@switch weapons"),
+        (assign, "$player2_listening_for_input_key", 0x14),
+    ]],
+
+    [trp_player2|plyr, "player2_controls_action",
+    [],
     "Look down.", "player2_controls_listen",
     [
         (str_store_string, s5, "@look down"),
@@ -1757,6 +1773,12 @@ dialogs = [
             (eq,"$player2_listening_for_input_key", 0x12),
             (assign, ":key_code", "$gk_p2_defend"),
         (else_try),
+            (eq,"$player2_listening_for_input_key", 0x13),
+            (assign, ":key_code", "$gk_p2_shield"),
+        (else_try),
+            (eq,"$player2_listening_for_input_key", 0x14),
+            (assign, ":key_code", "$gk_p2_switch"),
+        (else_try),
             (eq,"$player2_listening_for_input_key", 0x21),
             (assign, ":key_code", "$gk_p2_look_up"),
         (else_try),
@@ -1778,6 +1800,19 @@ dialogs = [
 
     [trp_player2|plyr, "player2_controls_action",
     [],
+    "Forget everything I have told you.", "player2_controls_reset",
+    [
+        (call_script, "script_player2_init_controls"),
+    ]],
+
+    [trp_player2, "player2_controls_reset",
+    [],
+    "I will do it my way again.", "player2_chat",
+    [
+    ]],
+
+    [trp_player2|plyr, "player2_controls_action",
+    [],
     "Nothing. Stay as you are.", "player2_controls_return",
     [
     ]],
@@ -1791,7 +1826,9 @@ dialogs = [
     [trp_player2|plyr, "player2_chat",
     [],
     "I love you.", "player2_love_1",
-    []],
+    [
+        (troop_set_slot, 99, "trp_player2", slot_troop_morality_value),
+    ]],
 
     [trp_player2|plyr, "player2_love_1",
     [],
