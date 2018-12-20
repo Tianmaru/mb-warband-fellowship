@@ -9,9 +9,12 @@ export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 print "Exporting assets..."
 
-if os.path.isfile("main.bmp"):
-	dest = os.path.join(export_dir, "main.bmp")
-	shutil.copy("main.bmp", dest)
+files = ["main.bmp", "icon.png"]
+
+for filename in files:
+    if os.path.isfile(filename):
+        dest = os.path.join(export_dir, filename)
+        shutil.copy(filename, dest)
 
 srcs = ["Data", "Music", "Resource", "SceneObj", "Sounds", "Textures"]
 

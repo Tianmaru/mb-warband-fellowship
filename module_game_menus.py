@@ -1301,7 +1301,7 @@ game_menus = [
  You want vengeance. You want justice. What was done to you cannot be undone,\
  and these debts can only be paid in blood..."),
         (jump_to_menu,"mnu_choose_skill"),
-        (start_presentation, "prsnt_player2_init"),
+        (start_presentation, "prsnt_fellowship_player2_init"),
         ]),
       ("death",[],"The loss of a loved one.",[
         (assign,"$background_answer_4",cb4_loss),
@@ -1310,7 +1310,7 @@ game_menus = [
  painful. Perhaps your new life will let you forget,\
  or honour the name that you can no longer bear to speak..."),
         (jump_to_menu,"mnu_choose_skill"),
-        (start_presentation, "prsnt_player2_init"),
+        (start_presentation, "prsnt_fellowship_player2_init"),
         ]),
       ("wanderlust",[],"Wanderlust.",[
         (assign,"$background_answer_4",cb4_wanderlust),
@@ -1319,7 +1319,7 @@ game_menus = [
  wandering have taken over your life. Whether you yearn for some faraway place or merely for the open road and the\
  freedom to travel, you could no longer bear to stay in the same place. You simply went and never looked back..."),
         (jump_to_menu,"mnu_choose_skill"),
-        (start_presentation, "prsnt_player2_init"),
+        (start_presentation, "prsnt_fellowship_player2_init"),
         ]),
 ##      ("fervor",[],"Religious fervor.",[
 ##        (assign,"$background_answer_4",4),
@@ -1336,7 +1336,7 @@ game_menus = [
  However, you know you cannot go back. There's nothing to go back to. Whatever home you may have had is gone\
  now, and you must face the fact that you're out in the wide wide world. Alone to sink or swim..."),
         (jump_to_menu,"mnu_choose_skill"),
-        (start_presentation, "prsnt_player2_init"),
+        (start_presentation, "prsnt_fellowship_player2_init"),
         ]),
      ("greed",[],"Lust for money and power.",[
         (assign,"$background_answer_4",cb4_greed),
@@ -1347,7 +1347,7 @@ game_menus = [
  You want people to know your name, and tremble whenever it is spoken.\
  You want everything, and you won't let anyone stop you from having it..."),
         (jump_to_menu,"mnu_choose_skill"),
-        (start_presentation, "prsnt_player2_init"),
+        (start_presentation, "prsnt_fellowship_player2_init"),
         ]),
       ("go_back",[],"Go back.",
        [(jump_to_menu,"mnu_start_character_3"),

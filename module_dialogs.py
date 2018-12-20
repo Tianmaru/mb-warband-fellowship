@@ -1802,7 +1802,7 @@ dialogs = [
     [],
     "Forget everything I have told you.", "player2_controls_reset",
     [
-        (call_script, "script_player2_init_controls"),
+        (call_script, "script_fellowship_player2_init_controls"),
     ]],
 
     [trp_player2, "player2_controls_reset",
@@ -24899,6 +24899,12 @@ I suppose there are plenty of bounty hunters around to get the job done . . .", 
     (reset_visitors),
     (store_random_in_range, "$g_player_entry_point", 32, 40),
     (set_visitor, "$g_player_entry_point", "trp_player"),
+    # FELLOWSHIP # add player 2 to arena #######################################
+    (try_begin),
+        (main_party_has_troop, "trp_player2"),
+        (set_visitor, "$g_player_entry_point", "trp_player2"),
+    (end_try),
+    ############################################################################
     (set_jump_mission,"mt_arena_melee_fight"),
     (jump_to_scene, ":scene"),
     ]],

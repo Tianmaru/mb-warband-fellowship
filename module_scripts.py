@@ -901,9 +901,9 @@ scripts = [
     ]),
 
 ### FELLOWSHIP #################################################################
-    # script_player2_init_controls
+    # script_fellowship_player2_init_controls
     # Intializes controls of player 2
-    ("player2_init_controls",
+    ("fellowship_player2_init_controls",
     [
         (try_begin),
             (troop_set_face_key_from_current_profile, "trp_player2"), # set face
@@ -929,6 +929,27 @@ scripts = [
         (try_begin),
             (troop_set_face_key_from_current_profile, "trp_player2"), # set face
         (end_try),
+    ]),
+
+    # script_fellowship_player2_init
+    ("fellowship_player2_init",
+    [
+        #(troop_set_auto_equip, "trp_player2", 0),
+        (troop_set_slot, "trp_player2", slot_troop_morality_type, -1),
+        (troop_set_slot, "trp_player2", slot_troop_morality_value, 0),
+        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_type, -1),
+        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_value, 0),
+        (troop_set_slot, "trp_player2", slot_troop_personalityclash_object, "trp_Dranton"),
+        (troop_set_slot, "trp_player2", slot_troop_personalityclash2_object, "trp_Kradus"),
+        (troop_set_slot, "trp_player2", slot_troop_personalitymatch_object, "trp_Xerina"),
+        (troop_set_slot, "trp_player2", slot_troop_home, "p_town_13"), #Rivacheg
+        (troop_set_slot, "trp_player2", slot_troop_payment_request, 0),
+        (troop_set_slot, "trp_player2", slot_troop_kingsupport_argument, argument_lords),
+        (troop_set_slot, "trp_player2", slot_troop_kingsupport_opponent, "trp_npc1"), #borcha
+        (troop_set_slot, "trp_player2", slot_troop_town_with_contacts, "p_town_4"), #reyvadin
+        (troop_set_slot, "trp_player2", slot_troop_original_faction, 0),
+        (troop_set_slot, "trp_player2", slot_troop_home_speech_delivered, 1), # Disable player 2 home speech
+        (call_script, "script_fellowship_player2_init_controls"),
     ]),
 
     #script_key_get_name_by_key_code
@@ -1346,6 +1367,66 @@ scripts = [
 		(store_sub, ":rot_y", 0, ":rot_y"),
 		(position_rotate_y, pos0, ":rot_y"),
 		(position_get_rotation_around_z, reg0, pos0),
+    ]),
+
+# # script_fellowship_vector_angle
+# # uses positions as vectors and calculates the angle between
+# # INPUT: position index a, position index b
+# # OUTPUT: reg0
+#     ("fellowship_vector_angle",
+#     [
+#         (store_script_param_1, ":a"),
+#         (store_script_param_2, ":b"),
+#         (call_script, "script_fellowship_vector_dot_product", ":a", ":b"),
+#         (assign, ":dot_product", reg0),
+#         (call_script, "script_fellowship_vector_magnitude", ":a"),
+#         (assign, ":magnitude_a", reg0),
+#         (call_script, "script_fellowship_vector_magnitude", ":b"),
+#         (assign, ":magnitude_b", reg0),
+#         (store_mul, ":angle", ":magnitude_a", ":magnitude_b"),
+#         (store_div, ":angle", ":dot_product", ":angle"),
+#         (convert_to_fixed_point, ":angle"),
+#         (store_acos, ":angle", ":angle"),
+#         (convert_from_fixed_point, ":angle"),
+# 		(assign, reg0, ":angle"),
+#     ]),
+
+# script_fellowship_vector_magnitude
+# uses positions as vectors and calculate magnitude
+# INPUT: position index a
+# OUTPUT: reg0
+    ("fellowship_vector_magnitude",
+    [
+        (store_script_param_1, ":a"),
+        (call_script, "script_fellowship_vector_dot_product", ":a", ":a"),
+        (convert_to_fixed_point, reg0),
+        (store_sqrt, ":magnitude", reg0),
+        (convert_from_fixed_point, ":magnitude"),
+        (assign, reg0, ":magnitude"),
+    ]),
+
+# script_fellowship_vector_dot_product
+# uses positions as vectors and calculates the dot product
+# INPUT: position index a, position index b
+# OUTPUT: reg0
+    ("fellowship_vector_dot_product",
+    [
+        (store_script_param_1, ":a"),
+        (store_script_param_2, ":b"),
+        (position_get_x, ":a_x", ":a"),
+        (position_get_x, ":b_x", ":b"),
+        (position_get_y, ":a_y", ":a"),
+        (position_get_y, ":b_y", ":b"),
+        (position_get_z, ":a_z", ":a"),
+        (position_get_z, ":b_z", ":b"),
+        (assign, ":dot_product", 0),
+        (store_mul, ":axbx", ":a_x", ":b_x"),
+        (store_mul, ":ayby", ":a_y", ":b_y"),
+        (store_mul, ":azbz", ":a_z", ":b_z"),
+        (val_add, ":dot_product", ":axbx"),
+        (val_add, ":dot_product", ":ayby"),
+        (val_add, ":dot_product", ":azbz"),
+        (assign, reg0, ":dot_product"),
     ]),
 ################################################################################
 
@@ -34190,24 +34271,6 @@ scripts = [
 		(troop_set_slot, "trp_npc16", slot_troop_kingsupport_opponent, "trp_npc12"), #nizar
  		(troop_set_slot, "trp_npc16", slot_troop_town_with_contacts, "p_town_9"), #khudan
 		(troop_set_slot, "trp_npc16", slot_lord_reputation_type, lrep_roguish), #
-
-		######## Fellowship #######################################################################################
-        (troop_set_slot, "trp_player2", slot_troop_morality_type, -1), # player 2
-        (troop_set_slot, "trp_player2", slot_troop_morality_value, 0),
-        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_type, -1),
-        (troop_set_slot, "trp_player2", slot_troop_2ary_morality_value, 0),
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash_object, "trp_Dranton"),
-        (troop_set_slot, "trp_player2", slot_troop_personalityclash2_object, "trp_Kradus"),
-        (troop_set_slot, "trp_player2", slot_troop_personalitymatch_object, "trp_Xerina"),
-        (troop_set_slot, "trp_player2", slot_troop_home, "p_town_13"), #Rivacheg
-        (troop_set_slot, "trp_player2", slot_troop_payment_request, 0),
-		(troop_set_slot, "trp_player2", slot_troop_kingsupport_argument, argument_lords),
-		(troop_set_slot, "trp_player2", slot_troop_kingsupport_opponent, "trp_npc1"), #borcha
-		(troop_set_slot, "trp_player2", slot_troop_town_with_contacts, "p_town_4"), #reyvadin
-		(troop_set_slot, "trp_player2", slot_troop_original_faction, 0),
-		(troop_set_slot, "trp_player2", slot_troop_home_speech_delivered, 1), # Disable player 2 home speech
-
-		####################################################################################################################
 
 		# assign string ids for npc dialog
 
