@@ -1,6 +1,6 @@
 # mb-warband-fellowship
 
-Fellowship is an upcoming mod for the video game [Mount and Blade: Warband](https://www.taleworlds.com/en/Games/Warband). It will focus on local coop campaign gameplay.
+Fellowship is a mod for the video game [Mount and Blade: Warband](https://www.taleworlds.com/en/Games/Warband). It focuses on local coop campaign gameplay.
 This repository is meant to be a backup copy for me and to serve as an example for other modders.
 
 ## Installing
@@ -12,8 +12,7 @@ Steam Workshop Version coming soon.
 * [Python 2.7](https://www.python.org/)
 
 ## Contributing
-Lines that differ from the basic module system are marked with a "#Fellowship" comment.
-Feel free to add own ideas.
+Please see the [guidelines for contributing](CONTRIBUTING.md).
 
 ## Acknowledgments
 * Taleworlds
