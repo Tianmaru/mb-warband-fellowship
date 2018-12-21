@@ -14,6 +14,12 @@ Alternatively, you could install the mod from the [Steam Workshop](https://steam
 ## Contributing
 Please see the [guidelines for contributing](CONTRIBUTING.md).
 
+## Compatibility
+As long as your own mod is not offensive and you give credits, you may include Fellowship in your mod.
+
+## Disclaimer
+I do not own Mount and Blade: Warband or the original module system.
+
 ## Acknowledgments
 * Taleworlds
 * The Mount&Blade modding community.
