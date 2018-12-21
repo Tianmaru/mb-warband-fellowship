@@ -922,18 +922,19 @@ scripts = [
         (assign, "$gk_p2_look_up", key_numpad_8),
     ]),
 
-    # script_player2_set_face
+    # script_fellowship_player2_set_face
     # sets the face of player 2 from current multiplayer profile
-    ("player2_set_face",
+    ("fellowship_player2_set_face",
     [
         (try_begin),
             (troop_set_face_key_from_current_profile, "trp_player2"), # set face
         (end_try),
     ]),
 
-    # script_fellowship_player2_init
-    ("fellowship_player2_init",
+    # script_fellowship_init
+    ("fellowship_init",
     [
+        (assign, "$fellowship_player_mouse_control", 1),
         #(troop_set_auto_equip, "trp_player2", 0),
         (troop_set_slot, "trp_player2", slot_troop_morality_type, -1),
         (troop_set_slot, "trp_player2", slot_troop_morality_value, 0),
@@ -952,11 +953,11 @@ scripts = [
         (call_script, "script_fellowship_player2_init_controls"),
     ]),
 
-    #script_key_get_name_by_key_code
+    #script_fellowship_key_get_name_by_key_code
     # Gets human-readable key name by key code
     # INPUT: key code
     # OUTPUT: s0
-    ("key_get_name_by_key_code",
+    ("fellowship_key_get_name_by_key_code",
     [
         (store_script_param, ":key_code", 1),
         (try_begin),

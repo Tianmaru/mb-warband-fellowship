@@ -81,7 +81,6 @@ fellowship_player2_control = (
 
 		(agent_get_horse, ":horse_no", ":player2_no"),
 		(agent_get_attack_action, ":attack_action", ":player2_no"),
-		(agent_get_action_dir, ":action_dir", ":player2_no"),
 		(mission_cam_get_position, pos0),
 		(call_script, "script_fellowship_get_global_rotation_around_z", pos0),
 		(assign, ":orientation", reg0),
@@ -90,6 +89,7 @@ fellowship_player2_control = (
 		(assign, ":move_y", 0),
 		(assign, ":look_x", 0),
 		(assign, ":look_y", 0),
+		(store_random_in_range, ":action_dir", 0, 4),
 
 		(try_begin),
 			(this_or_next|key_clicked, "$gk_p2_move_down"),
@@ -114,41 +114,64 @@ fellowship_player2_control = (
 		(try_begin),
 			(this_or_next|key_clicked, "$gk_p2_look_down"),
 			(key_is_down, "$gk_p2_look_down"),
-			(val_add, ":look_y", -1000),
+			(try_begin),
+				(this_or_next|key_clicked, "$gk_p2_attack"),
+				(key_clicked, "$gk_p2_defend"),
+				(assign, ":action_dir", 0),
+			(else_try),
+				(val_add, ":look_y", -1000),
+			(end_try),
 		(try_end),
 		(try_begin),
 			(this_or_next|key_clicked, "$gk_p2_look_right"),
 			(key_is_down, "$gk_p2_look_right"),
-			(val_add, ":look_x", 1000),
+			(try_begin),
+				(this_or_next|key_clicked, "$gk_p2_attack"),
+				(key_clicked, "$gk_p2_defend"),
+				(assign, ":action_dir", 1),
+			(else_try),
+				(val_add, ":look_x", 1000),
+			(end_try),
 		(try_end),
 		(try_begin),
 			(this_or_next|key_clicked, "$gk_p2_look_left"),
 			(key_is_down, "$gk_p2_look_left"),
-			(val_add, ":look_x", -1000),
+			(try_begin),
+				(this_or_next|key_clicked, "$gk_p2_attack"),
+				(key_clicked, "$gk_p2_defend"),
+				(assign, ":action_dir", 2),
+			(else_try),
+				(val_add, ":look_x", -1000),
+			(end_try),
 		(try_end),
 		(try_begin),
 			(this_or_next|key_clicked, "$gk_p2_look_up"),
 			(key_is_down, "$gk_p2_look_up"),
-			(val_add, ":look_y", 1000),
+			(try_begin),
+				(this_or_next|key_clicked, "$gk_p2_attack"),
+				(key_clicked, "$gk_p2_defend"),
+				(assign, ":action_dir", 3),
+			(else_try),
+				(val_add, ":look_y", 1000),
+			(end_try),
 		(try_end),
 		(try_begin),
 			(key_is_down, "$gk_p2_attack"),
 			(try_begin),
 				(eq, ":attack_action", 0),
-				(store_random_in_range, ":attack_dir",0, 3),
-				(agent_set_attack_action, ":player2_no", ":attack_dir", 1),
+				(agent_set_attack_action, ":player2_no", ":action_dir", 1),
 			(try_end),
 		(else_try),
 			(this_or_next|key_clicked, "$gk_p2_attack"),
 			(eq,":attack_action", 1),
-			(neq,":action_dir", -1),
-			(agent_set_attack_action, ":player2_no", ":action_dir", 0),
+			(agent_get_action_dir, ":attack_dir", ":player2_no"),
+			(neq,":attack_dir", -1),
+			(agent_set_attack_action, ":player2_no", ":attack_dir", 0),
 		(try_end),
 		(try_begin),
 			(key_is_down, "$gk_p2_defend"),
 			(agent_set_attack_action, ":player2_no", -2, 0), #cancel attack
-			(store_random_in_range, ":defend_dir",0, 3),
-			(agent_set_defend_action, ":player2_no", ":defend_dir", 0),
+			(agent_set_defend_action, ":player2_no", ":action_dir", 0),
 		(else_try),
 			(agent_get_defend_action, ":defend_action", ":player2_no"),
 			(neq, ":defend_action", 0),
@@ -351,62 +374,78 @@ fellowship_player_control = (
 		(set_fixed_point_multiplier, 100),
 		(get_player_agent_no, ":player_no"),
 
-		# apparently can't override player control
-		# (omit_key_once, key_w),
-		# (omit_key_once, key_d),
-		# (omit_key_once, key_a),
-		# (omit_key_once, key_s),
-		# (omit_key_once, gk_attack),
-		# (omit_key_once, gk_defend),
-
 		(agent_get_horse, ":horse_no", ":player_no"),
 		(mission_cam_get_position, pos0),
 		(call_script, "script_fellowship_get_global_rotation_around_z", pos0),
 		(assign, ":orientation", reg0),
 
-		(agent_get_position, pos0, ":player_no"),
-		(position_get_screen_projection, pos1, pos0),
-		(position_get_x, ":x_1", pos1),
-		(position_get_y, ":y_1", pos1),
-		(mouse_get_position, pos2),
-		(position_get_x, ":x_2", pos2),
-		(position_get_y, ":y_2", pos2),
-		(store_sub, ":dx", ":x_2", ":x_1"),
-		(store_sub, ":dy", ":y_2", ":y_1"),
-		(convert_to_fixed_point, ":dx"),
-		(convert_to_fixed_point, ":dy"),
-		(store_atan2, ":angle", ":dy", ":dx"),
-		(convert_from_fixed_point, ":angle"),
-		(store_add, ":rotation_target", ":angle", ":orientation"),
-		(val_sub, ":rotation_target", 90),
+		(try_begin),
+			(game_key_clicked, gk_cam_toggle),
+			(try_begin),
+				(eq, "$fellowship_player_mouse_control", 1),
+				(display_message, "@Pointer mode disabled."),
+				(assign, "$fellowship_player_mouse_control", 0),
+			(else_try),
+				(assign, "$fellowship_player_mouse_control", 1),
+				(display_message, "@Pointer mode enabled."),
+			(end_try),
+		(end_try),
 
 		(try_begin),
-			(eq, ":horse_no", -1),
-			(init_position, pos0),
-			(agent_get_position, pos1, ":player_no"),
-			(position_copy_rotation, pos1, pos0),
-			(position_rotate_z, pos1, ":rotation_target", 1),
-			(agent_set_position, ":player_no", pos1),
+			(eq, "$fellowship_player_mouse_control", 1),
+			(agent_get_position, pos0, ":player_no"),
+			(position_get_screen_projection, pos1, pos0),
+			(position_get_x, ":x_1", pos1),
+			(position_get_y, ":y_1", pos1),
+			(mouse_get_position, pos2),
+			(position_get_x, ":x_2", pos2),
+			(position_get_y, ":y_2", pos2),
+			(store_sub, ":dx", ":x_2", ":x_1"),
+			(store_sub, ":dy", ":y_2", ":y_1"),
+			(convert_to_fixed_point, ":dx"),
+			(convert_to_fixed_point, ":dy"),
+			(store_atan2, ":angle", ":dy", ":dx"),
+			(convert_from_fixed_point, ":angle"),
+			(store_add, ":rotation_target", ":angle", ":orientation"),
+			(val_sub, ":rotation_target", 90),
+			(try_begin),
+				(eq, ":horse_no", -1),
+				(init_position, pos0),
+				(agent_get_position, pos1, ":player_no"),
+				(position_copy_rotation, pos1, pos0),
+				(position_rotate_z, pos1, ":rotation_target", 1),
+				(agent_set_position, ":player_no", pos1),
+			(end_try),
 		(end_try),
 	]
 )
 
-fellowship_battle_ui_init = (
+fellowship_battle_ui = (
 	0, 0, 0,
 	[
 		(main_party_has_troop, "trp_player2"),
 		(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
-		(neg|is_presentation_active, "prsnt_fellowship_healthbar"),
-		(neg|is_presentation_active, "prsnt_fellowship_crosshair"),
-		(neg|is_presentation_active, "prsnt_battle"),
 	],
 	[
-		(start_presentation, "prsnt_fellowship_healthbar"),
-		(start_presentation, "prsnt_fellowship_crosshair"),
+		(try_begin),
+			(eq, "$fellowship_player_mouse_control", 1),
+			(try_begin),
+				(neg|is_presentation_active, "prsnt_fellowship_crosshair"),
+				(start_presentation, "prsnt_fellowship_crosshair"),
+			(end_try),
+		(else_try),
+			(is_presentation_active, "prsnt_fellowship_crosshair"),
+			(presentation_set_duration, 0),
+		(end_try),
+
+		(try_begin),
+			(neg|is_presentation_active, "prsnt_fellowship_healthbar"),
+			(start_presentation, "prsnt_fellowship_healthbar"),
+		(end_try),
 	]
 )
 
-player2 = [fellowship_player_control, fellowship_player2_control_init, fellowship_player2_control, fellowship_camera_init, fellowship_camera, fellowship_battle_ui_init]
+player2 = [fellowship_player_control, fellowship_player2_control_init, fellowship_player2_control, fellowship_camera_init, fellowship_camera, fellowship_battle_ui]
 
 fellowship_player2_control_edit = (
 	0,0,0,
@@ -1638,6 +1677,14 @@ tournament_triggers = [
          (val_add, ":num_active_fighters", 1),
        (try_end),
        (lt, ":num_active_fighters", 7),
+	   # FELLOWSHIP ############################################################
+	   (assign, ":fellowship_player2_fallen", 0),
+	   (try_begin),
+	     (call_script, "script_cf_fellowship_player2_fallen"),
+	     (assign, ":fellowship_player2_fallen", 1),
+	   (end_try),
+	   (this_or_next|neq, ":fellowship_player2_fallen", 1),
+	   #########################################################################
        (neg|main_hero_fallen),
        (store_mission_timer_a, ":cur_time"),
        (this_or_next|ge, ":cur_time", "$g_arena_training_next_spawn_time"),
@@ -1680,6 +1727,12 @@ tournament_triggers = [
        (assign, ":max_teams", 6),
        (val_max, ":max_teams", 1),
        (get_player_agent_no, ":player_agent"),
+	   # FELLOWSHIP ############################################################
+	   (try_begin),
+	   	(call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+		(assign, ":player2_agent", reg0),
+	   (end_try),
+	   #########################################################################
        (try_for_agents, ":agent_no"),
          (agent_is_human, ":agent_no"),
          (agent_is_alive, ":agent_no"),
@@ -1689,6 +1742,11 @@ tournament_triggers = [
          (try_begin),
            (eq, ":agent_no", ":player_agent"),
            (agent_set_team, ":agent_no", 6), #player is always team 6.
+		 # FELLOWSHIP ##########################################################
+		 (else_try),
+           (eq, ":agent_no", ":player2_agent"),
+           (agent_set_team, ":agent_no", 6), #player2 is always team 6
+		 #######################################################################.
          (else_try),
            (store_random_in_range, ":selected_team", 0, ":max_teams"),
           # find strongest team
@@ -1699,6 +1757,9 @@ tournament_triggers = [
              (agent_is_human, ":other_agent_no"),
              (agent_is_alive, ":other_agent_no"),
              (neq, ":agent_no", ":player_agent"),
+			 # FELLOWSHIP ######################################################
+			 (neq, ":agent_no", ":player2_agent"),
+			 ###################################################################
              (agent_slot_eq, ":other_agent_no", slot_agent_arena_team_set, 1),
              (agent_get_team, ":other_agent_team", ":other_agent_no"),
              (troop_get_slot, ":count", "trp_temp_array_a", ":other_agent_team"),
@@ -1722,6 +1783,7 @@ tournament_triggers = [
          (agent_set_slot, ":agent_no", slot_agent_arena_team_set, 1),
          (try_begin),
            (neq, ":agent_no", ":player_agent"),
+		   (neq, ":agent_no", ":player2_agent"),
            (val_add, "$g_arena_training_num_agents_spawned", 1),
          (try_end),
        (try_end),
@@ -2830,9 +2892,9 @@ mission_templates = [
       (1, 4, ti_once,
 	[
 		(main_hero_fallen),
-		# FELLOWSHIP
-		# Battle is only lost if player 2 has fallen too
+		# FELLOWSHIP # Battle is only lost if player 2 has fallen too ##########
 		(call_script,"script_cf_fellowship_player2_fallen"),
+		########################################################################
 	],
           [
               (assign, "$pin_player_fallen", 1),
@@ -15171,11 +15233,23 @@ mission_templates = [
          ]),
       ],
   ),
-
-
 ]
 
-### FELLOWSHIP add player2 triggers to all missions
+# FELLOWSHIP # add player2 triggers to missions ################################
+fellowship_mission_templates = [
+	"lead_charge",
+	"village_attack_bandits",
+	"village_raid",
+	"besiege_inner_battle_castle",
+	"besiege_inner_battle_town_center",
+	"castle_attack_walls_defenders_sally",
+	"castle_attack_walls_belfry",
+	"castle_attack_walls_ladder",
+	"arena_melee_fight",
+	"bandit_lair",
+	"alley_fight",
+]
+
 for mt in mission_templates:
-	if mt[0] != "conversation_encounter":
+	if mt[0] in fellowship_mission_templates:
 		mt[5].extend(player2)

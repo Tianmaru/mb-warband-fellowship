@@ -1593,164 +1593,164 @@ dialogs = [
       (troop_is_hero,"$g_talk_troop"),
       (troop_get_slot, ":honorific", "$g_talk_troop", slot_troop_honorific),
       (str_store_string, s5, ":honorific"),
-    ], "Yes, {playername}?", "player2_chat",
+    ], "Yes, {playername}?", "fellowship_player2_chat",
     [
       (try_begin),
         (unlock_achievement, ACHIEVEMENT_TALKING_HELPS),
       (try_end),
     ]],
 
-    [trp_player2|plyr, "player2_chat",
+    [trp_player2|plyr, "fellowship_player2_chat",
     [],
-    "Let me see your equipment.", "player2_trade",
+    "Let me see your equipment.", "fellowship_player2_trade",
     []],
 
-    [trp_player2,"player2_trade",
+    [trp_player2,"fellowship_player2_trade",
     [],
-    "Very well, it's all here...", "do_player2_trade",
+    "Very well, it's all here...", "fellowship_player2_trade_return",
     [
         (change_screen_equip_other),
     ]],
 
-    [trp_player2,"do_player2_trade",
+    [trp_player2,"fellowship_player2_trade_return",
     [],
-    "Anything else?", "player2_chat",
+    "Anything else?", "fellowship_player2_chat",
     []],
 
-    [trp_player2|plyr,"player2_chat",
+    [trp_player2|plyr,"fellowship_player2_chat",
     [],
-    "What can you tell me about your skills?","view_player2_char_requested",
+    "What can you tell me about your skills?","fellowship_player2_view_char",
     []],
 
-    [trp_player2,"view_player2_char_requested",
+    [trp_player2,"fellowship_player2_view_char",
     [],
-    "All right, let me tell you...", "do_player2_view_char",
+    "All right, let me tell you...", "fellowship_player2_view_char_return",
     [
         (change_screen_view_character),
     ]],
 
-    [trp_player2, "do_player2_view_char",
+    [trp_player2, "fellowship_player2_view_char_return",
     [],
-    "Anything else?", "player2_chat",
+    "Anything else?", "fellowship_player2_chat",
     []],
 
-    [trp_player2|plyr, "player2_chat",
+    [trp_player2|plyr, "fellowship_player2_chat",
     [],
-    "Let's talk about your mindset.", "player2_controls",
+    "Let's talk about your mindset.", "fellowship_player2_controls",
     []],
 
-    [trp_player2, "player2_controls",
+    [trp_player2, "fellowship_player2_controls",
     [],
-    "What should I do differently?", "player2_controls_action",
+    "What should I do differently?", "fellowship_player2_controls_action",
     [
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Move down.", "player2_controls_listen",
+    "Move down.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@move down"),
         (assign, "$player2_listening_for_input_key", 0x01),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Move right.", "player2_controls_listen",
+    "Move right.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@move right"),
         (assign, "$player2_listening_for_input_key", 0x02),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Move left.", "player2_controls_listen",
+    "Move left.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@move left"),
         (assign, "$player2_listening_for_input_key", 0x03),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Move up.", "player2_controls_listen",
+    "Move up.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@move up"),
         (assign, "$player2_listening_for_input_key", 0x04),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Attack.", "player2_controls_listen",
+    "Attack.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@attack"),
         (assign, "$player2_listening_for_input_key", 0x11),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Defend.", "player2_controls_listen",
+    "Defend.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@defend"),
         (assign, "$player2_listening_for_input_key", 0x12),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Unequip shield.", "player2_controls_listen",
+    "Unequip shield.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@unequip shield"),
         (assign, "$player2_listening_for_input_key", 0x13),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Switch weapons.", "player2_controls_listen",
+    "Switch weapons.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@switch weapons"),
         (assign, "$player2_listening_for_input_key", 0x14),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Look down.", "player2_controls_listen",
+    "Look down.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@look down"),
         (assign, "$player2_listening_for_input_key", 0x21),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Look right.", "player2_controls_listen",
+    "Look right.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@look right"),
         (assign, "$player2_listening_for_input_key", 0x22),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Look left.", "player2_controls_listen",
+    "Look left.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@look left"),
         (assign, "$player2_listening_for_input_key", 0x23),
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Look up.", "player2_controls_listen",
+    "Look up.", "fellowship_player2_controls_listen",
     [
         (str_store_string, s5, "@look up"),
         (assign, "$player2_listening_for_input_key", 0x24),
     ]],
 
-    [trp_player2, "player2_controls_listen",
+    [trp_player2, "fellowship_player2_controls_listen",
     [
         (assign, "$player2_listening_for_input", 1),
         (display_message, "@Press a key"),
     ],
-    "Tell me how to {s5}, I am listening...", "player2_controls_understood",
+    "Tell me how to {s5}, I am listening...", "fellowship_player2_controls_understood",
     [
     ]],
 
-    [trp_player2, "player2_controls_understood",
+    [trp_player2, "fellowship_player2_controls_understood",
     [
         (try_begin),
             (eq,"$player2_listening_for_input_key", 0x01),
@@ -1791,61 +1791,61 @@ dialogs = [
             (eq,"$player2_listening_for_input_key", 0x24),
             (assign, ":key_code", "$gk_p2_look_up"),
         (end_try),
-        (call_script, "script_key_get_name_by_key_code", ":key_code"),
+        (call_script, "script_fellowship_key_get_name_by_key_code", ":key_code"),
         (str_store_string_reg, s6, s0),
     ],
-    "Got it, I will now {s5} by {s6}.", "player2_controls_action",
+    "Got it, I will now {s5} by {s6}.", "fellowship_player2_controls_action",
     [
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Forget everything I have told you.", "player2_controls_reset",
+    "Forget everything I have told you.", "fellowship_player2_controls_reset",
     [
         (call_script, "script_fellowship_player2_init_controls"),
     ]],
 
-    [trp_player2, "player2_controls_reset",
+    [trp_player2, "fellowship_player2_controls_reset",
     [],
-    "I will do it my way again.", "player2_chat",
+    "I will do it my way again.", "fellowship_player2_chat",
     [
     ]],
 
-    [trp_player2|plyr, "player2_controls_action",
+    [trp_player2|plyr, "fellowship_player2_controls_action",
     [],
-    "Nothing. Stay as you are.", "player2_controls_return",
+    "Nothing. Stay as you are.", "fellowship_player2_controls_return",
     [
     ]],
 
-    [trp_player2, "player2_controls_return",
+    [trp_player2, "fellowship_player2_controls_return",
     [],
-    "Thank you. Anything else?", "player2_chat",
+    "Thank you. Anything else?", "fellowship_player2_chat",
     [
     ]],
 
-    [trp_player2|plyr, "player2_chat",
+    [trp_player2|plyr, "fellowship_player2_chat",
     [],
-    "I love you.", "player2_love_1",
+    "I love you.", "fellowship_player2_love_1",
     [
-        (troop_set_slot, 99, "trp_player2", slot_troop_morality_value),
+        # (troop_set_slot, 99, "trp_player2", slot_troop_morality_value),
     ]],
 
-    [trp_player2|plyr, "player2_love_1",
+    [trp_player2|plyr, "fellowship_player2_love_1",
     [],
-    "I love you.", "player2_love_2",
+    "I love you.", "fellowship_player2_love_2",
     []],
 
-    [trp_player2, "player2_love_2",
+    [trp_player2, "fellowship_player2_love_2",
     [],
-    "I love you too.", "player2_love_return",
+    "I love you too.", "fellowship_player2_love_return",
     []],
 
-    [trp_player2, "player2_love_return",
+    [trp_player2, "fellowship_player2_love_return",
     [],
-    "Anything else?", "player2_chat",
+    "Anything else?", "fellowship_player2_chat",
     []],
 
-    [trp_player2|plyr, "player2_chat",
+    [trp_player2|plyr, "fellowship_player2_chat",
     [],
     "Never mind.", "close_window",
     []],

@@ -1,8 +1,8 @@
 script_game_start = 0
 script_fellowship_player2_init_controls = 1
-script_player2_set_face = 2
-script_fellowship_player2_init = 3
-script_key_get_name_by_key_code = 4
+script_fellowship_player2_set_face = 2
+script_fellowship_init = 3
+script_fellowship_key_get_name_by_key_code = 4
 script_cf_fellowship_player2_fallen = 5
 script_fellowship_get_global_rotation_around_z = 6
 script_fellowship_vector_magnitude = 7

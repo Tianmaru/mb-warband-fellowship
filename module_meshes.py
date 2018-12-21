@@ -598,6 +598,6 @@ meshes = [
   ("mp_ui_host_maps_19", 0, "mp_ui_host_maps_e2", 0, 0, 0, 0, 0, 0, 1, 1, 1),
   ("mp_ui_host_maps_20", 0, "mp_ui_host_maps_e1", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 
-  # FELLOWSHIP
+  # FELLOWSHIP # Crosshair mesh for player 1
   ("fellowship_crosshair", 0, "crosshair", 0, 0, 0, 0, 0, 0, 1, 1, 1),
 ]
