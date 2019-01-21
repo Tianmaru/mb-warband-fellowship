@@ -1,14 +1,8 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 from header_common import *
 from module_info import *
 from module_animations import *
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def compile_action_sets(actions):
   action_codes = []

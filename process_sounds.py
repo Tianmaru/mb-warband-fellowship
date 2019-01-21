@@ -1,12 +1,6 @@
-import sys
-sys.dont_write_bytecode = True
-
 from header_common import *
 from module_info import *
 from module_sounds import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def write_python_header(sounds):
   file = open("./ID_sounds.py","w")

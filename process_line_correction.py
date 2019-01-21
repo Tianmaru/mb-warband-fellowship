@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 file = open("module_scripts.py","r")
 lines = file.readlines()
 file.close()

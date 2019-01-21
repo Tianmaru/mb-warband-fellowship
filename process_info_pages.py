@@ -1,15 +1,9 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 
 from module_info import *
 from module_info_pages import *
 
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_info_pages():
   ofile = open(export_dir + "info_pages.txt","w")

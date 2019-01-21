@@ -1,14 +1,8 @@
-import sys
-sys.dont_write_bytecode = True
-
 from module_info import *
 from module_party_templates import *
 #from process_operations import *
 
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 
 def save_party_template_troop(file,troop):

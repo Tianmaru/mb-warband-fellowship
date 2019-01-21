@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 #import string
 #import types
 
@@ -14,9 +11,6 @@ from module_variables import *
 from process_common import *
 from process_operations import *
 
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 
 #-------------------------------------------------------

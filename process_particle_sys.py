@@ -1,12 +1,6 @@
-import sys
-sys.dont_write_bytecode = True
-
 from module_info import *
 from module_particle_systems import *
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 id_pos        = 0
 flags_pos     = 1

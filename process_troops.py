@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 
 from module_info import *
@@ -8,9 +5,6 @@ from module_troops import *
 
 from process_common import *
 #from process_operations import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 
 num_face_numeric_keys = 4
@@ -43,10 +37,7 @@ def save_troops():
 #    inventory_list.append(itm_bolts)
     for inventory_item in inventory_list:
 #      add_tag_use(tag_uses,tag_item,inventory_item)
-      if isinstance(inventory_item, list) or isinstance(inventory_item, tuple):
-        file.write("%d %d "%(inventory_item[0], inventory_item[1]<<24))
-      else:
-        file.write("%d 0 "%inventory_item) 
+      file.write("%d 0 "%inventory_item)
     for i in xrange(64 - len(inventory_list)):
       file.write("-1 0 ")
     file.write("\n ")

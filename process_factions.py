@@ -1,13 +1,7 @@
-import sys
-sys.dont_write_bytecode = True
-
 from module_info import *
 from module_factions import *
 
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 faction_name_pos = 0
 faction_flags_pos = 2

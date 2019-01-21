@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 import types
 from header_game_menus import *
 from module_info import *
@@ -9,9 +6,6 @@ from module_parties import *
 from process_operations import *
 
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 
 def save_parties(parties):

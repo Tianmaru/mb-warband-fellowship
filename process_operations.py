@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 import types
 
@@ -8,7 +5,6 @@ from process_common import *
 from header_common import *
 from header_operations import *
 
-from module_info_pages import *
 from module_strings import *
 from module_skills import *
 from module_music import *
@@ -99,11 +95,8 @@ def get_id_value(tag, identifier, tag_uses):
   elif (tag == "tableau"):
     id_no = find_object(tableaus,identifier)
     tag_type = tag_tableau
-  elif (tag == "ip"):
-    id_no = find_object(info_pages,identifier)
-    tag_type = 0
 
-  if (tag_type > 0 and id_no > -1):
+  if (tag_type > -1 and id_no > -1):
     add_tag_use(tag_uses,tag_type,id_no)
   return (tag_type, id_no)
   
@@ -114,7 +107,7 @@ def get_identifier_value(str, tag_uses):
     tag_str = str[0:underscore_pos]
     id_str  = str[underscore_pos + 1:len(str)]
     (tag_type, id_no) = get_id_value(tag_str,id_str,tag_uses)
-    if (tag_type >= 0):
+    if (tag_type > 0):
       if (id_no < 0):
         print "Error: Unable to find object:" + str
       else:
@@ -436,14 +429,11 @@ def save_statement_block(ofile,statement_name,can_fail_statement,statement_block
     else:
       opcode = statement[0]
       no_variables = 0
-# LAV TWEAKS BEGIN
-    #if (opcode in [try_begin,
-    #               try_for_range,
-    #               try_for_range_backwards,
-    #               try_for_parties,
-    #               try_for_agents]):
-    if opcode in depth_operations:
-# LAV TWEAKS END
+    if (opcode in [try_begin,
+                   try_for_range,
+                   try_for_range_backwards,
+                   try_for_parties,
+                   try_for_agents]):
       current_depth = current_depth + 1
     elif (opcode == try_end):
       current_depth = current_depth - 1

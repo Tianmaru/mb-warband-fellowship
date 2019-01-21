@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 import types
 
@@ -9,9 +6,6 @@ from module_game_menus import *
 
 from process_common import *
 from process_operations import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_game_menu_item(ofile,variable_list,variable_uses,menu_item,tag_uses,quick_strings):
   ofile.write(" mno_%s "%(menu_item[0]))

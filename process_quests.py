@@ -1,15 +1,9 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 
 from module_info import *
 from module_quests import *
 
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_quests():
   ofile = open(export_dir + "quests.txt","w")

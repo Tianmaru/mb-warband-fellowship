@@ -53,6 +53,33 @@ multiplayer_event_admin_set_anti_cheat                        = 44
 multiplayer_event_open_game_rules                             = 45
 multiplayer_event_offer_duel                                  = 46
 multiplayer_event_admin_set_disallow_ranged_weapons           = 47
+#INVASION MODE START
+multiplayer_event_other_events                                = 48
+
+
+#other client events
+multiplayer_event_other_event_set_bot_purchase                = 0
+multiplayer_event_other_event_ccoop_lock_companions           = 1
+multiplayer_event_coop_set_agent_team_and_group               = 2
+multiplayer_event_other_event_ccoop_count_down_visible		  = 3
+multiplayer_event_other_event_ccoop_count_down_invisible	  = 4
+multiplayer_event_other_spawn_prison_cart					  = 5
+multiplayer_event_other_destroy_prison_cart					  = 6
+
+multiplayer_event_other_event_ccoop_update_spawn_data_1		  = 7
+multiplayer_event_other_event_ccoop_update_spawn_data_2		  = 8
+multiplayer_event_other_event_ccoop_update_spawn_data_3		  = 9
+multiplayer_event_other_event_ccoop_update_spawn_data_4		  = 10
+multiplayer_event_other_event_ccoop_update_spawn_data_5		  = 11
+multiplayer_event_other_event_ccoop_update_spawn_data_6		  = 12
+
+multiplayer_event_other_events_change_companion_level 		  = 13
+multiplayer_event_admin_set_ccoop_difficulty                  = 14
+multiplayer_event_other_event_unequip_item			 		  = 15
+multiplayer_event_other_event_equip_item			 		  = 16
+multiplayer_event_coop_send_drop_assignment_to_server         = 17
+multiplayer_event_coop_set_agent_team_and_group               = 18
+#INVASION MODE END
 
 #server events
 multiplayer_event_return_max_num_players                      = 50
@@ -118,6 +145,20 @@ multiplayer_event_start_duel                                  = 109
 multiplayer_event_cancel_duel                                 = 110
 multiplayer_event_show_server_message                         = 111
 multiplayer_event_return_disallow_ranged_weapons              = 112
+#INVASION MODE START
+multiplayer_event_return_set_bot_selection                    = 113 
+multiplayer_event_return_team_ratio                           = 114
+multiplayer_event_return_squad_size                           = 115
+multiplayer_event_return_disallow_granades                    = 116
+multiplayer_event_return_sound_at_pos                         = 117
+multiplayer_event_return_enable_cbf_squad_ratio				  = 118
+multiplayer_event_return_cbf_squad_ratio					  = 119
+multiplayer_event_coop_drop_item                              = 120
+multiplayer_event_coop_chest_opened                           = 121
+multiplayer_event_return_ccoop_difficulty                     = 122
+multiplayer_event_ccoop_victory_message                       = 123
+multiplayer_event_ccoop_return_of_the_king                    = 124
+#INVASION MODE END
 
 #multiplayer message types
 multiplayer_message_type_auto_team_balance_done      = 2
@@ -147,7 +188,10 @@ multiplayer_game_type_capture_the_flag       = 4
 multiplayer_game_type_headquarters           = 5
 multiplayer_game_type_siege                  = 6
 multiplayer_game_type_duel                   = 7
-multiplayer_num_game_types                   = 8
+#INVASION MODE START
+multiplayer_game_type_captain_coop           = 8
+multiplayer_num_game_types                   = 9
+#INVASION MODE END
 
 #admin panel value ranges
 multiplayer_round_max_seconds_min            = 60
@@ -171,13 +215,19 @@ multi_data_item_button_indices_begin = multi_data_troop_button_indices_end
 multi_data_item_button_indices_end = multi_data_item_button_indices_begin + 100 #maximum 100 items per troop
 multi_data_flag_owner_begin = multi_data_item_button_indices_end
 multi_data_flag_owner_end = multi_data_flag_owner_begin + 10 #maximum of 10 flags per scene
-multi_data_flag_players_around_begin = multi_data_flag_owner_end
+multi_data_flag_players_around_begin = multi_data_flag_owner_end 
 multi_data_flag_players_around_end = multi_data_flag_players_around_begin + 10 #maximum of 10 flags per scene
 multi_data_flag_owned_seconds_begin = multi_data_flag_players_around_end
 multi_data_flag_owned_seconds_end = multi_data_flag_owned_seconds_begin + 10 #maximum of 10 flags per scene
 multi_data_flag_pull_code_begin = multi_data_flag_owned_seconds_end
 multi_data_flag_pull_code_end = multi_data_flag_pull_code_begin + 10 #maximum of 10 flags per scene
-multi_data_player_index_list_begin = multi_data_flag_pull_code_end
+#INVASION MODE START
+multi_data_ccoop_wave_spawn_data_begin = multi_data_flag_pull_code_end
+multi_data_ccoop_wave_spawn_data_end = multi_data_ccoop_wave_spawn_data_begin + 16 #maximum of 5 different troop types, amounts and entry points (+ 1 for count)
+multi_data_equipment_holder_begin = multi_data_ccoop_wave_spawn_data_end
+multi_data_equipment_holder_end = multi_data_equipment_holder_begin + 9
+multi_data_player_index_list_begin = multi_data_equipment_holder_end
+#INVASION MODE END
 
 #Entry points 100..109 is used for showing initial points for moveable and usable scene props like siege ladder.
 multi_entry_points_for_usable_items_start = 100
@@ -273,9 +323,9 @@ multi_headquarters_pole_height = 900
 multi_headquarters_flag_height_to_win = 800 #used in sd death mode
 multi_headquarters_flag_initial_height = 100 #used in sd death mode
 multi_headquarters_max_distance_sq_to_raise_flags = 1600 #4m * 4m * 100 = 1600
-multi_headquarters_distance_sq_to_set_flag = 8100 #9m * 9m * 100 = 8100
-multi_headquarters_distance_sq_to_change_flag = 400 #2m * 2m * 100 = 400
-multi_headquarters_distance_to_change_flag = 200 #2m * 100 = 200
+multi_headquarters_distance_sq_to_set_flag = 8100 #9m * 9m * 100 = 8100 
+multi_headquarters_distance_sq_to_change_flag = 400 #2m * 2m * 100 = 400 
+multi_headquarters_distance_to_change_flag = 200 #2m * 100 = 200 
 multi_distance_sq_to_use_belfry = 36 #6m * 6m = 36 (there is no * 100 for this one because it uses get_sq_distance_between_positions_in_meters instead of get_sq_distance_between_positions)
 multi_max_sq_dist_between_agents_to_longer_mof_time = 49 #7m * 7m = 49m
 min_allowed_flag_height_difference_to_make_score = 50
@@ -288,6 +338,14 @@ multiplayer_spawn_above_opt_enemy_dist_point = 32 #while finding most suitable s
 multiplayer_spawn_min_enemy_dist_limit = 45 #while finding most suitable spawn point if nearest enemy is closer than 45 meters give negative points to that spawn point, (squared increase)
 
 multiplayer_poll_disable_period = 900 #15 minutes
+
+#INVASION MODE START
+multi_distance_to_captain_spaw_point = 15*100
+multi_killer_captain_add = 60
+multi_captain_recomended_players_max = 16
+multi_killer_captain_coop_add = 200
+#multi_captain_coop_round_duration_in_sec = 600 # 10 minutes
+#INVASION MODE END
 
 #menu variables
 escape_menu_item_height = 40
@@ -365,221 +423,211 @@ def find_object(objects,object_id):
     i_object += 1
   return result
 
+s0  =  0
+s1  =  1
+s2  =  2
+s3  =  3
+s4  =  4
+s5  =  5
+s6  =  6
+s7  =  7
+s8  =  8
+s9  =  9
+s10 = 10
+s11 = 11
+s12 = 12
+s13 = 13
+s14 = 14
+s15 = 15
+s16 = 16
+s17 = 17
+s18 = 18
+s19 = 19
+s20 = 20
+s21 = 21
+s22 = 22
+s23 = 23
+s24 = 24
+s25 = 25
+s26 = 26
+s27 = 27
+s28 = 28
+s29 = 29
+s30 = 30
+s31 = 31
+s32 = 32
+s33 = 33
+s34 = 34
+s35 = 35
+s36 = 36
+s37 = 37
+s38 = 38
+s39 = 39
+s40 = 40
+s41 = 41
+s42 = 42
+s43 = 43
+s44 = 44
+s45 = 45
+s46 = 46
+s47 = 47
+s48 = 48
+s49 = 49
+s50 = 50
+s51 = 51
+s52 = 52
+s53 = 53
+s54 = 54
+s55 = 55
+s56 = 56
+s57 = 57
+s58 = 58
+s59 = 59
+s60 = 60
+s61 = 61
+s62 = 62
+s63 = 63
 
-# LAV TWEAKS BEGIN
+s64 = 64
+s65 = 65
+s66 = 66
+s67 = 67
 
-for index in xrange(128):
-	globals()['s%d' % index] = index
-	globals()['pos%d' % index] = index
-	globals()['reg%d' % index] = opmask_register | index
 
-#s0  =  0
-#s1  =  1
-#s2  =  2
-#s3  =  3
-#s4  =  4
-#s5  =  5
-#s6  =  6
-#s7  =  7
-#s8  =  8
-#s9  =  9
-#s10 = 10
-#s11 = 11
-#s12 = 12
-#s13 = 13
-#s14 = 14
-#s15 = 15
-#s16 = 16
-#s17 = 17
-#s18 = 18
-#s19 = 19
-#s20 = 20
-#s21 = 21
-#s22 = 22
-#s23 = 23
-#s24 = 24
-#s25 = 25
-#s26 = 26
-#s27 = 27
-#s28 = 28
-#s29 = 29
-#s30 = 30
-#s31 = 31
-#s32 = 32
-#s33 = 33
-#s34 = 34
-#s35 = 35
-#s36 = 36
-#s37 = 37
-#s38 = 38
-#s39 = 39
-#s40 = 40
-#s41 = 41
-#s42 = 42
-#s43 = 43
-#s44 = 44
-#s45 = 45
-#s46 = 46
-#s47 = 47
-#s48 = 48
-#s49 = 49
-#s50 = 50
-#s51 = 51
-#s52 = 52
-#s53 = 53
-#s54 = 54
-#s55 = 55
-#s56 = 56
-#s57 = 57
-#s58 = 58
-#s59 = 59
-#s60 = 60
-#s61 = 61
-#s62 = 62
-#s63 = 63
-#
-#s64 = 64
-#s65 = 65
-#s66 = 66
-#s67 = 67
-#
-#
-#pos0  =  0
-#pos1  =  1
-#pos2  =  2
-#pos3  =  3
-#pos4  =  4
-#pos5  =  5
-#pos6  =  6
-#pos7  =  7
-#pos8  =  8
-#pos9  =  9
-#pos10 = 10
-#pos11 = 11
-#pos12 = 12
-#pos13 = 13
-#pos14 = 14
-#pos15 = 15
-#pos16 = 16
-#pos17 = 17
-#pos18 = 18
-#pos19 = 19
-#pos20 = 20
-#pos21 = 21
-#pos22 = 22
-#pos23 = 23
-#pos24 = 24
-#pos25 = 25
-#pos26 = 26
-#pos27 = 27
-#pos28 = 28
-#pos29 = 29
-#pos30 = 30
-#pos31 = 31
-#pos32 = 32
-#pos33 = 33
-#pos34 = 34
-#pos35 = 35
-#pos36 = 36
-#pos37 = 37
-#pos38 = 38
-#pos39 = 39
-#pos40 = 40
-#pos41 = 41
-#pos42 = 42
-#pos43 = 43
-#pos44 = 44
-#pos45 = 45
-#pos46 = 46
-#pos47 = 47
-#pos48 = 48
-#pos49 = 49
-#pos50 = 50
-#pos51 = 51
-#pos52 = 52
-#pos53 = 53
-#pos54 = 54
-#pos55 = 55
-#pos56 = 56
-#pos57 = 57
-#pos58 = 58
-#pos59 = 59
-#pos60 = 60
-#pos61 = 61
-#pos62 = 62
-#pos63 = 63
+pos0  =  0
+pos1  =  1
+pos2  =  2
+pos3  =  3
+pos4  =  4
+pos5  =  5
+pos6  =  6
+pos7  =  7
+pos8  =  8
+pos9  =  9
+pos10 = 10
+pos11 = 11
+pos12 = 12
+pos13 = 13
+pos14 = 14
+pos15 = 15
+pos16 = 16
+pos17 = 17
+pos18 = 18
+pos19 = 19
+pos20 = 20
+pos21 = 21
+pos22 = 22
+pos23 = 23
+pos24 = 24
+pos25 = 25
+pos26 = 26
+pos27 = 27
+pos28 = 28
+pos29 = 29
+pos30 = 30
+pos31 = 31
+pos32 = 32
+pos33 = 33
+pos34 = 34
+pos35 = 35
+pos36 = 36
+pos37 = 37
+pos38 = 38
+pos39 = 39
+pos40 = 40
+pos41 = 41
+pos42 = 42
+pos43 = 43
+pos44 = 44
+pos45 = 45
+pos46 = 46
+pos47 = 47
+pos48 = 48
+pos49 = 49
+pos50 = 50
+pos51 = 51
+pos52 = 52
+pos53 = 53
+pos54 = 54
+pos55 = 55
+pos56 = 56
+pos57 = 57
+pos58 = 58
+pos59 = 59
+pos60 = 60
+pos61 = 61
+pos62 = 62
+pos63 = 63
 pos_belfry_begin = 64
-#
-#reg0   = opmask_register| 0
-#reg1   = opmask_register| 1
-#reg2   = opmask_register| 2
-#reg3   = opmask_register| 3
-#reg4   = opmask_register| 4
-#reg5   = opmask_register| 5
-#reg6   = opmask_register| 6
-#reg7   = opmask_register| 7
-#reg8   = opmask_register| 8
-#reg9   = opmask_register| 9
-#reg10  = opmask_register|10
-#reg11  = opmask_register|11
-#reg12  = opmask_register|12
-#reg13  = opmask_register|13
-#reg14  = opmask_register|14
-#reg15  = opmask_register|15
-#reg16  = opmask_register|16
-#reg17  = opmask_register|17
-#reg18  = opmask_register|18
-#reg19  = opmask_register|19
-#reg20  = opmask_register|20
-#reg21  = opmask_register|21
-#reg22  = opmask_register|22
-#reg23  = opmask_register|23
-#reg24  = opmask_register|24
-#reg25  = opmask_register|25
-#reg26  = opmask_register|26
-#reg27  = opmask_register|27
-#reg28  = opmask_register|28
-#reg29  = opmask_register|29
-#reg30  = opmask_register|30
-#reg31  = opmask_register|31
-#reg32  = opmask_register|32
-#reg33  = opmask_register|33
-#reg34  = opmask_register|34
-#reg35  = opmask_register|35
-#reg36  = opmask_register|36
-#reg37  = opmask_register|37
-#reg38  = opmask_register|38
-#reg39  = opmask_register|39
-#reg40  = opmask_register|40
-#reg41  = opmask_register|41
-#reg42  = opmask_register|42
-#reg43  = opmask_register|43
-#reg44  = opmask_register|44
-#reg45  = opmask_register|45
-#reg46  = opmask_register|46
-#reg47  = opmask_register|47
-#reg48  = opmask_register|48
-#reg49  = opmask_register|49
-#reg50  = opmask_register|50
-#reg51  = opmask_register|51
-#reg52  = opmask_register|52
-#reg53  = opmask_register|53
-#reg54  = opmask_register|54
-#reg55  = opmask_register|55
-#reg56  = opmask_register|56
-#reg57  = opmask_register|57
-#reg58  = opmask_register|58
-#reg59  = opmask_register|59
-#reg60  = opmask_register|60
-#reg61  = opmask_register|61
-#reg62  = opmask_register|62
-#reg63  = opmask_register|63
-#
-#reg65  = opmask_register|65
 
-# LAV TWEAKS END
+reg0   = opmask_register| 0
+reg1   = opmask_register| 1
+reg2   = opmask_register| 2
+reg3   = opmask_register| 3
+reg4   = opmask_register| 4
+reg5   = opmask_register| 5
+reg6   = opmask_register| 6
+reg7   = opmask_register| 7
+reg8   = opmask_register| 8
+reg9   = opmask_register| 9
+reg10  = opmask_register|10
+reg11  = opmask_register|11
+reg12  = opmask_register|12
+reg13  = opmask_register|13
+reg14  = opmask_register|14
+reg15  = opmask_register|15
+reg16  = opmask_register|16
+reg17  = opmask_register|17
+reg18  = opmask_register|18
+reg19  = opmask_register|19
+reg20  = opmask_register|20
+reg21  = opmask_register|21
+reg22  = opmask_register|22
+reg23  = opmask_register|23
+reg24  = opmask_register|24
+reg25  = opmask_register|25
+reg26  = opmask_register|26
+reg27  = opmask_register|27
+reg28  = opmask_register|28
+reg29  = opmask_register|29
+reg30  = opmask_register|30
+reg31  = opmask_register|31
+reg32  = opmask_register|32
+reg33  = opmask_register|33
+reg34  = opmask_register|34
+reg35  = opmask_register|35
+reg36  = opmask_register|36
+reg37  = opmask_register|37
+reg38  = opmask_register|38
+reg39  = opmask_register|39
+reg40  = opmask_register|40
+reg41  = opmask_register|41
+reg42  = opmask_register|42
+reg43  = opmask_register|43
+reg44  = opmask_register|44
+reg45  = opmask_register|45
+reg46  = opmask_register|46
+reg47  = opmask_register|47
+reg48  = opmask_register|48
+reg49  = opmask_register|49
+reg50  = opmask_register|50
+reg51  = opmask_register|51
+reg52  = opmask_register|52
+reg53  = opmask_register|53
+reg54  = opmask_register|54
+reg55  = opmask_register|55
+reg56  = opmask_register|56
+reg57  = opmask_register|57
+reg58  = opmask_register|58
+reg59  = opmask_register|59
+reg60  = opmask_register|60
+reg61  = opmask_register|61
+reg62  = opmask_register|62
+reg63  = opmask_register|63
 
-spf_all_teams_are_enemy                      = 0x00000001,
+reg65  = opmask_register|65
+
+spf_all_teams_are_enemy                      = 0x00000001, 
 spf_is_horseman                              = 0x00000002,
 spf_examine_all_spawn_points                 = 0x00000004,
 spf_team_0_spawn_far_from_entry_32           = 0x00000008,

@@ -1,34 +1,34 @@
 @echo off
-"C:\Program Files\Python27\python.exe" process_init.py
-"C:\Program Files\Python27\python.exe" process_global_variables.py
-"C:\Program Files\Python27\python.exe" process_strings.py
-"C:\Program Files\Python27\python.exe" process_skills.py
-"C:\Program Files\Python27\python.exe" process_music.py
-"C:\Program Files\Python27\python.exe" process_animations.py
-"C:\Program Files\Python27\python.exe" process_meshes.py
-"C:\Program Files\Python27\python.exe" process_sounds.py
-"C:\Program Files\Python27\python.exe" process_skins.py
-"C:\Program Files\Python27\python.exe" process_map_icons.py
-"C:\Program Files\Python27\python.exe" process_factions.py
-"C:\Program Files\Python27\python.exe" process_items.py
-"C:\Program Files\Python27\python.exe" process_scenes.py
-"C:\Program Files\Python27\python.exe" process_troops.py
-"C:\Program Files\Python27\python.exe" process_particle_sys.py
-"C:\Program Files\Python27\python.exe" process_scene_props.py
-"C:\Program Files\Python27\python.exe" process_tableau_materials.py
-"C:\Program Files\Python27\python.exe" process_presentations.py
-"C:\Program Files\Python27\python.exe" process_party_tmps.py
-"C:\Program Files\Python27\python.exe" process_parties.py
-"C:\Program Files\Python27\python.exe" process_quests.py
-"C:\Program Files\Python27\python.exe" process_info_pages.py
-"C:\Program Files\Python27\python.exe" process_scripts.py
-"C:\Program Files\Python27\python.exe" process_mission_tmps.py
-"C:\Program Files\Python27\python.exe" process_game_menus.py
-"C:\Program Files\Python27\python.exe" process_simple_triggers.py
-"C:\Program Files\Python27\python.exe" process_dialogs.py
-"C:\Program Files\Python27\python.exe" process_global_variables_unused.py
-"C:\Program Files\Python27\python.exe" process_postfx.py
-"C:\Program Files\Python27\python.exe" process_assets.py
+python process_init.py
+python process_global_variables.py
+python process_strings.py
+python process_skills.py
+python process_music.py
+python process_animations.py
+python process_meshes.py
+python process_sounds.py
+python process_skins.py
+python process_map_icons.py
+python process_factions.py
+python process_items.py
+python process_scenes.py
+python process_troops.py
+python process_particle_sys.py
+python process_scene_props.py
+python process_tableau_materials.py
+python process_presentations.py
+python process_party_tmps.py
+python process_parties.py
+python process_quests.py
+python process_info_pages.py
+python process_scripts.py
+python process_mission_tmps.py
+python process_game_menus.py
+python process_simple_triggers.py
+python process_dialogs.py
+python process_global_variables_unused.py
+python process_postfx.py
+@del *.pyc
 echo.
 echo ______________________________
 echo.

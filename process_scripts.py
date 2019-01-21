@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 
 from module_info import *
@@ -8,9 +5,6 @@ from module_scripts import *
 
 from process_common import *
 from process_operations import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_scripts(variable_list,variable_uses,scripts,tag_uses,quick_strings):
   file = open(export_dir + "scripts.txt","w")

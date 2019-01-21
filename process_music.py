@@ -1,14 +1,8 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 from header_common import *
 from module_info import *
 from module_music import *
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_python_header():
   ofile = open("./ID_music.py","w")

@@ -1,15 +1,9 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 from process_common import *
 from module_info import *
 from module_skins import *
 
 import string
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 # WARNING: The following should be the same as the number in face_generator.h
 num_voice_types = 2

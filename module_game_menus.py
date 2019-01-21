@@ -1355,7 +1355,7 @@ game_menus = [
        ),
     ]
   ),
-
+################################################################################
 
 
   (
@@ -3205,7 +3205,7 @@ game_menus = [
       ]
   ),
 
-  ("cheat_change_weather",0,
+   ("cheat_change_weather",0,
    "{!}Current cloud amount: {reg5}^Current Fog Strength: {reg6}",
    "none",
    [

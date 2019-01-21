@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 import types
 
@@ -10,9 +7,6 @@ from module_dialogs import *
 
 from process_common import *
 from process_operations import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 
 speaker_pos = 0
@@ -130,7 +124,7 @@ def create_auto_id(sentence,auto_ids):
           done = 1
         else:
           i += 1
-      else:      
+      else:
         done = 1
         auto_ids[auto_id] = text
     if not done:
@@ -142,7 +136,7 @@ def create_auto_id(sentence,auto_ids):
       auto_id = new_auto_id
       auto_ids[auto_id] = text
     return auto_id
-  
+
 def create_auto_id2(sentence,auto_ids):
     text = sentence[text_pos]
     token_ipt = convert_to_identifier(sentence[ipt_token_pos])
@@ -164,7 +158,7 @@ def create_auto_id2(sentence,auto_ids):
       auto_id = new_auto_id
     auto_ids[auto_id] = text
     return auto_id
- 
+
 def save_sentences(variable_list,variable_uses,sentences,tag_uses,quick_strings,input_states,output_states):
   file = open(export_dir + "conversation.txt","w")
   file.write("dialogsfile version 2\n")
@@ -196,7 +190,7 @@ def save_sentences(variable_list,variable_uses,sentences,tag_uses,quick_strings,
 # Registered cookies is a list which enables the order of cookies to remain fixed across changes.
 # In order to remove cookies not used anymore, edit the cookies_registery.py and remove all entries.
 
-print "exporting triggers..."
+print "Exporting triggers..."
 variable_uses = []
 variables = load_variables(export_dir,variable_uses)
 tag_uses = load_tag_uses(export_dir)

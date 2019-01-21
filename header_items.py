@@ -42,6 +42,7 @@ itp_force_attach_left_forearm   = 0x0000000000000300
 itp_attach_armature             = 0x0000000000000f00
 itp_attachment_mask             = 0x0000000000000f00
 
+
 itp_unique               = 0x0000000000001000
 itp_always_loot          = 0x0000000000002000
 ##itp_melee                = 0x000002000
@@ -59,10 +60,8 @@ itp_food                 = 0x0000000000080000
 
 itp_cant_reload_on_horseback = 0x0000000000100000
 itp_two_handed               = 0x0000000000200000
-itp_primary                  = 0x0000000000400000 # for weapons
-itp_replaces_helm            = 0x0000000000400000 # for armor, allows body armor items which include helmet
-itp_secondary                = 0x0000000000800000 # for weapons
-itp_replaces_shoes           = 0x0000000000800000 # for armor, allows body armor items which include boots
+itp_primary                  = 0x0000000000400000
+itp_secondary                = 0x0000000000800000
 itp_covers_legs              = 0x0000000001000000
 itp_doesnt_cover_hair        = 0x0000000001000000
 itp_can_penetrate_shield     = 0x0000000001000000
@@ -89,6 +88,7 @@ itp_covers_hair              = 0x0000008000000000    #remove hair mesh for armor
 itp_force_show_body          = 0x0000010000000000 # forces showing body (works on body armor items)
 itp_force_show_left_hand     = 0x0000020000000000 # forces showing left hand (works on hand armor items)
 itp_force_show_right_hand    = 0x0000040000000000 # forces showing right hand (works on hand armor items)
+itp_covers_hair_partially    = 0x0000080000000000
 
 itp_extra_penetration        = 0x0000100000000000
 itp_has_bayonet              = 0x0000200000000000
@@ -101,6 +101,8 @@ itp_no_blur                  = 0x0008000000000000
 
 itp_cant_reload_while_moving_mounted = 0x0010000000000000
 itp_has_upper_stab           = 0x0020000000000000
+itp_disable_agent_sounds     = 0x0040000000000000 #disable agent related sounds, but not voices. useful for animals
+
 itp_kill_info_mask           = 0x0700000000000000
 itp_kill_info_bits           = 56 # 0x0700000000000000
 
@@ -128,108 +130,46 @@ pierce = 1
 blunt  = 2
 
 
-
-#ibf_head_armor_bits      = 0
-#ibf_body_armor_bits      = 8
-#ibf_leg_armor_bits       = 16
-#ibf_weight_bits          = 24
-#ibf_difficulty_bits      = 32
-#ibf_hitpoints_bits       = 40
-#iwf_swing_damage_bits       = 50
-#iwf_swing_damage_type_bits  = 58
-#iwf_thrust_damage_bits      = 60
-#iwf_thrust_damage_type_bits = 68
-#iwf_weapon_length_bits      = 70
-#iwf_speed_rating_bits       = 80
-#iwf_shoot_speed_bits        = 90
-#iwf_max_ammo_bits           = 100 # use this for shield endurance too?
-#iwf_abundance_bits          = 110
-#iwf_accuracy_bits           = 16  #reuse leg_armor for accuracy  
-#iwf_damage_type_bits = 8
-
-#ibf_armor_mask           = 0xff
-#ibf_damage_mask          = 0x3ff
-#ibf_10bit_mask           = 0x3ff
-#ibf_hitpoints_mask       = 0xffff
-
-ibf_2bit_mask  = 0x0003
-ibf_8bit_mask  = 0x00ff
-ibf_10bit_mask = 0x03ff
-ibf_12bit_mask = 0x0fff
-ibf_16bit_mask = 0xffff
-
-ibf_armor_mask           = ibf_8bit_mask
-ibf_damage_mask          = ibf_10bit_mask
-ibf_damage_type_mask     = ibf_2bit_mask
-ibf_hitpoints_mask       = ibf_16bit_mask
-
-# PREVIOUS MASKS:
-
-#                 1 1 1
-#                 2 1 0 9 8 8 7 6 5 4 4 3 2 1
-#                 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8 0
-
-# head_armor : 0x000000000000000000000000000000ff
-# body_armor : 0x0000000000000000000000000000ff00
-# leg_armor  : 0x00000000000000000000000000ff0000
-# weight     : 0x000000000000000000000000ff000000
-# difficulty : 0x0000000000000000000000ff00000000
-# hit_points : 0x000000000000000000ffff0000000000
-# swing_dmg  : 0x000000000000000003fc000000000000
-# swing_type : 0x00000000000000000c00000000000000
-# thrust_dmg : 0x000000000000000ff000000000000000
-# thrust_type: 0x00000000000000300000000000000000
-# length     : 0x000000000000ffc00000000000000000
-# speed      : 0x0000000000ff00000000000000000000
-# shoot_speed: 0x0000000ffc0000000000000000000000
-# max_ammo   : 0x00000ff0000000000000000000000000
-# abundance  : 0x003fc000000000000000000000000000
-
-# IMPROVED MASKS:
-
-#                 1 1 1 1 1
-#                 3 2 2 1 0 9 8 8 7 6 5 4 4 3 2 1
-#                 6 8 0 2 4 6 8 0 2 4 6 8 0 2 4 6 8 0
-
-# head_armor : 0x0000000000000000000000000000000000ff
-# body_armor : 0x00000000000000000000000000000000ff00
-# leg_armor  : 0x000000000000000000000000000000ff0000
-# weight     : 0x00000000000000000000000000ffff000000
-# difficulty : 0x000000000000000000000000ff0000000000
-# hit_points : 0x00000000000000000000ffff000000000000
-# swing_comb : 0x00000000000000000fff0000000000000000
-# thrust_comb: 0x00000000000000fff0000000000000000000
-# length     : 0x00000000000fff0000000000000000000000
-# speed      : 0x000000000ff0000000000000000000000000
-# shoot_speed: 0x000000fff000000000000000000000000000
-# max_ammo   : 0x00ffff000000000000000000000000000000
-# abundance  : 0xff0000000000000000000000000000000000
+ibf_armor_mask           = 0x00000000000000000000000ff
+ibf_damage_mask          = 0x00000000000000000000003ff
+ibf_10bit_mask           = 0x00000000000000000000003ff
 
 ibf_head_armor_bits      = 0
 ibf_body_armor_bits      = 8
 ibf_leg_armor_bits       = 16
 ibf_weight_bits          = 24
-ibf_difficulty_bits      = 40
-ibf_hitpoints_bits       = 48
-iwf_swing_damage_bits    = 64
-iwf_thrust_damage_bits   = 76
-iwf_weapon_length_bits   = 88
-iwf_speed_rating_bits    = 100
-iwf_shoot_speed_bits     = 108
-iwf_max_ammo_bits        = 120
-iwf_abundance_bits       = 136
+ibf_difficulty_bits      = 32
+
+ibf_hitpoints_mask       = 0x0000ffff
+ibf_hitpoints_bits       = 40
+
+#iwf_damage_mask             = 0x10000000000000ff #make sure value is 64 bits so that << will work
+iwf_swing_damage_bits       = 50
+iwf_swing_damage_type_bits  = 58
+iwf_thrust_damage_bits      = 60
+iwf_thrust_damage_type_bits = 68
+iwf_weapon_length_bits      = 70
+iwf_speed_rating_bits       = 80
+iwf_shoot_speed_bits        = 90
+
+iwf_max_ammo_bits           = 100 # use this for shield endurance too?
+iwf_abundance_bits          = 110
+iwf_accuracy_bits           = 16  #reuse leg_armor for accuracy  
+#iwf_horse_speed_bits        = 8
+#iwf_horse_maneuver_bits     = 16
+#iwf_horse_charge_bits       = 24
 
 iwf_damage_type_bits = 8
 
 
 def weight(x):
-  a = int(100.0 * x + 0.5)
-  a = ibf_16bit_mask & a
-  return (((bignum | a) & ibf_16bit_mask) << ibf_weight_bits)
+  a = int(4.0 * x)
+  a = ibf_armor_mask & a
+  return (((bignum | a) & ibf_armor_mask) << ibf_weight_bits)
   
 def get_weight(y):
-  a = (y >> ibf_weight_bits) & ibf_16bit_mask
-  return a / 100.0
+  a = (y >> ibf_weight_bits) & ibf_armor_mask
+  return 0.25 * a 
 
 def head_armor(x):
   return (((bignum | x) & ibf_armor_mask) << ibf_head_armor_bits)
@@ -268,16 +208,16 @@ def get_speed_rating(y):
   return (y >> iwf_speed_rating_bits) & ibf_armor_mask
 
 def shoot_speed(x):
-  return (((bignum | x) & ibf_12bit_mask) << iwf_shoot_speed_bits)
+  return (((bignum | x) & ibf_10bit_mask) << iwf_shoot_speed_bits)
 
 def get_missile_speed(y):
-  return (y >> iwf_shoot_speed_bits) & ibf_12bit_mask
-
-def weapon_length(x):
-  return (((bignum | x) & ibf_12bit_mask) << iwf_weapon_length_bits)
+  return (y >> iwf_shoot_speed_bits) & ibf_10bit_mask
 
 def horse_scale(x):
-  return weapon_length(x)
+  return (((bignum | x) & ibf_10bit_mask) << iwf_weapon_length_bits)
+
+def weapon_length(x):
+  return (((bignum | x) & ibf_10bit_mask) << iwf_weapon_length_bits)
 
 def shield_width(x):
   return weapon_length(x)
@@ -286,13 +226,13 @@ def shield_height(x):
   return shoot_speed(x)
  
 def get_weapon_length(y):
-  return ((y >> iwf_weapon_length_bits) & ibf_12bit_mask)
+  return ((y >> iwf_weapon_length_bits) & ibf_10bit_mask)
 
 def max_ammo(x):
-  return (((bignum | x) & ibf_16bit_mask) << iwf_max_ammo_bits)
+  return (((bignum | x) & ibf_armor_mask) << iwf_max_ammo_bits)
 
 def get_max_ammo(y):
-  return (y >> iwf_max_ammo_bits) & ibf_16bit_mask
+  return (y >> iwf_max_ammo_bits) & ibf_armor_mask
 
 def swing_damage(damage,damage_type):
   x = ((damage_type << iwf_damage_type_bits) | (damage & ibf_armor_mask))
@@ -315,7 +255,7 @@ def horse_maneuver(x):
   return spd_rtng(x)
 
 def horse_charge(x):
-  return thrust_damage(x, blunt)
+  return thrust_damage(x,0)
 
 def food_quality(x):
   return head_armor(x)

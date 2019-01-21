@@ -1,14 +1,8 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 from header_common import *
 from module_info import *
 from module_skills import *
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 skill_name_pos = 1
 skill_attribute_pos = 2

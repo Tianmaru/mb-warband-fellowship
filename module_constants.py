@@ -24,8 +24,8 @@ slot_item_urban_demand             = 11 #consumer demand for a good in town, mea
 slot_item_rural_demand             = 12 #consumer demand in villages, measured in abstract units
 slot_item_desert_demand            = 13 #consumer demand in villages, measured in abstract units
 
-slot_item_production_slot          = 14
-slot_item_production_string        = 15
+slot_item_production_slot          = 14 
+slot_item_production_string        = 15 
 
 slot_item_tied_to_good_price       = 20 #ie, weapons and metal armor to tools, padded to cloth, leather to leatherwork, etc
 
@@ -44,6 +44,9 @@ slot_item_output_per_run                = 55 #number of items produced per run
 slot_item_overhead_per_run              = 56 #labor and overhead per run
 slot_item_secondary_raw_material        = 57 #in this case, the amount used is only one
 slot_item_enterprise_building_cost      = 58 #enterprise building cost
+#INVASION MODE START
+slot_item_ccoop_has_ammo                = 59 #should be set to 1 for Invasion item drops that have an additional item for ammunition (e.g. Javelin Bow)
+#INVASION MODE END
 
 
 slot_item_multiplayer_item_class   = 60 #temporary, can be moved to higher values
@@ -82,7 +85,11 @@ slot_agent_walker_occupation      = 25
 #Equipment cost fix
 slot_agent_bought_horse           = 26
 ###
-
+#INVASION MODE START
+slot_agent_doom_javelin_count     = 27
+slot_agent_doom_javelin_attacker  = 28
+#INVASION MODE END
+    
 ########################################################
 ##  FACTION SLOTS          #############################
 ########################################################
@@ -214,7 +221,7 @@ slot_faction_sum_advice_about_factions_begin 			= 150
 	# reGonalist/dynastic (based around an alternate ruling house
 	# regionalist/republican
 	# messianic (ie, Canudos)
-
+	
 ########################################################
 ##  PARTY SLOTS            #############################
 ########################################################
@@ -324,7 +331,7 @@ argument_ruler        = 2 #deprecate for commons
 argument_commons      = 2
 
 argument_benefit      = 3 #deprecate for reward
-argument_reward       = 3
+argument_reward       = 3 
 
 argument_victory      = 4
 argument_lords        = 5
@@ -381,7 +388,7 @@ slot_party_home_center            = 123 #Only use with caravans and villagers
 slot_center_current_improvement   = 124
 slot_center_improvement_end_hour  = 125
 
-slot_party_last_traded_center     = 126
+slot_party_last_traded_center     = 126 
 
 
 
@@ -471,7 +478,7 @@ slot_town_trade_routes_end = slot_town_trade_route_15 + 1
 num_trade_goods = itm_siege_supply - itm_spice
 slot_town_trade_good_productions_begin       = 500 #a harmless number, until it can be deprecated
 
-#These affect production but in some cases also demand, so it is perhaps easier to itemize them than to have separate
+#These affect production but in some cases also demand, so it is perhaps easier to itemize them than to have separate 
 
 slot_village_number_of_cattle   = 205
 slot_center_head_cattle         = 205 #dried meat, cheese, hides, butter
@@ -620,8 +627,11 @@ pis_ship                        = 2
 ########################################################
 ##  SCENE SLOTS            #############################
 ########################################################
-slot_scene_visited              = 0
-slot_scene_belfry_props_begin   = 10
+slot_scene_visited               = 0
+#INVASION MODE START
+slot_scene_ccoop_disallow_horses = 1 #should be set to 1 for scenes that should be played dismounted in Invasion mode (e.g. Forest Hideout)
+#INVASION MODE END
+slot_scene_belfry_props_begin    = 10
 
 
 
@@ -638,7 +648,7 @@ slot_troop_occupation          = 2  # 0 = free, 1 = merchant
 #homage_feudal   =              = 3 #
 
 
-slot_troop_state               = 3
+slot_troop_state               = 3  
 slot_troop_last_talk_time      = 4
 slot_troop_met                 = 5 #i also use this for the courtship state -- may become cumbersome
 slot_troop_courtship_state     = 5 #2 professed admiration, 3 agreed to seek a marriage, 4 ended relationship
@@ -693,7 +703,7 @@ slot_troop_father              = 31
 slot_troop_mother              = 32
 slot_troop_guardian            = 33 #Usually siblings are identified by a common parent.This is used for brothers if the father is not an active npc. At some point we might introduce geneologies
 slot_troop_betrothed           = 34 #Obviously superseded once slot_troop_spouse is filled
-#other relations are derived from one's parents
+#other relations are derived from one's parents 
 #slot_troop_daughter            = 33
 #slot_troop_son                 = 34
 #slot_troop_sibling             = 35
@@ -906,20 +916,24 @@ slot_troop_enemy_routed_agents                  = 148
 
 #Special quest slots
 slot_troop_mission_participation        = 149
-mp_unaware                              = 0
-mp_stay_out                             = 1
-mp_prison_break_fight                   = 2
-mp_prison_break_stand_back              = 3
-mp_prison_break_escaped                 = 4
-mp_prison_break_caught                  = 5
+mp_unaware                              = 0 
+mp_stay_out                             = 1 
+mp_prison_break_fight                   = 2 
+mp_prison_break_stand_back              = 3 
+mp_prison_break_escaped                 = 4 
+mp_prison_break_caught                  = 5 
 
-#Below are some constants to expand the political system a bit. The idea is to make quarrels less random, but instead make them serve a rational purpose -- as a disincentive to lords to seek
+#Below are some constants to expand the political system a bit. The idea is to make quarrels less random, but instead make them serve a rational purpose -- as a disincentive to lords to seek 
 
 slot_troop_controversy                     = 150 #Determines whether or not a troop is likely to receive fief or marshalship
 slot_troop_recent_offense_type 	           = 151 #failure to join army, failure to support colleague
 slot_troop_recent_offense_object           = 152 #to whom it happened
 slot_troop_recent_offense_time             = 153
 slot_troop_stance_on_faction_issue         = 154 #when it happened
+#INVASION MODE START
+slot_troop_coop_lord_spawned               = 155 #used to keep track of lords spawning in Invasion mode
+slot_troop_mp_squad_type                   = 156 #used while generating waves for Invasion mode
+#INVASION MODE END
 
 tro_failed_to_join_army                    = 1
 tro_failed_to_support_colleague            = 2
@@ -938,9 +952,9 @@ troop_slots_reserved_for_relations_start        = 165 #this is based on id_troop
 
 slot_troop_relations_begin				= 0 #this creates an array for relations between troops
 											#Right now, lords start at 165 and run to around 290, including pretenders
-
-
-
+											
+											
+											
 ########################################################
 ##  PLAYER SLOTS           #############################
 ########################################################
@@ -970,7 +984,20 @@ slot_player_bot_type_2_wanted                  = 36
 slot_player_bot_type_3_wanted                  = 37
 slot_player_bot_type_4_wanted                  = 38
 slot_player_spawn_count                        = 39
-
+#INVASION MODE START
+slot_player_ccoop_drop_item_1                  = 40
+slot_player_ccoop_drop_item_2                  = 41
+slot_player_companion_ids_locked               = 42
+slot_player_companion_ids_begin                = 43
+slot_player_companion_ids_end                  = slot_player_companion_ids_begin + 2 # there are 2 companions for each player
+slot_player_companion_classes_begin            = slot_player_companion_ids_end
+slot_player_companion_classes_end              = slot_player_companion_classes_begin + 2
+slot_player_companion_levels_begin             = slot_player_companion_classes_end
+slot_player_companion_levels_end               = slot_player_companion_levels_begin + 2
+slot_player_coop_dropped_item                  = slot_player_companion_levels_end
+slot_player_coop_opened_chests_begin           = slot_player_coop_dropped_item + 1
+slot_player_coop_opened_chests_end             = slot_player_coop_opened_chests_begin + 10
+#INVASION MODE END
 
 ########################################################
 ##  TEAM SLOTS             #############################
@@ -1099,6 +1126,10 @@ scene_prop_number_of_agents_pushing = 3 #for belfries only
 scene_prop_next_entry_point_id      = 4 #for belfries only
 scene_prop_belfry_platform_moved    = 5 #for belfries only
 scene_prop_slots_end                = 6
+#INVASION MODE START
+scene_prop_ccoop_item_drop_start    = 7 #For keeping track of who has opened drop chests in Invasion mode
+scene_prop_ccoop_item_drop_end      = scene_prop_ccoop_item_drop_start + 10
+#INVASION MODE END
 
 ########################################################
 rel_enemy   = 0
@@ -1140,7 +1171,7 @@ logent_village_extorted          = 2
 logent_caravan_accosted          = 3 #in caravan accosted, center and troop object are -1, and the defender's faction is the object
 logent_traveller_attacked        = 3 #in traveller attacked, origin and destination are center and troop object, and the attacker's faction is the object
 
-logent_helped_peasants           = 4
+logent_helped_peasants           = 4 
 
 logent_party_traded              = 5
 
@@ -1160,7 +1191,7 @@ logent_pledged_allegiance          = 21
 logent_liege_grants_fief_to_vassal = 22
 
 
-logent_renounced_allegiance      = 23
+logent_renounced_allegiance      = 23 
 
 logent_player_claims_throne_1    		               = 24
 logent_player_claims_throne_2    		               = 25
@@ -1191,7 +1222,7 @@ logent_lord_insults_lord_for_dishonor                  = 43
 
 
 
-logent_game_start                           = 45
+logent_game_start                           = 45 
 logent_poem_composed                        = 46 ##Not added
 logent_tournament_distinguished             = 47 ##Not added
 logent_tournament_won                       = 48 ##Not added
@@ -1251,7 +1282,7 @@ logent_war_declaration_types_end							= 95
 
 #lord reputation type, for commentaries
 #"Martial" will be twice as common as the other types
-lrep_none           = 0
+lrep_none           = 0 
 lrep_martial        = 1 #chivalrous but not terribly empathetic or introspective, - eg Richard Lionheart, your average 14th century French baron
 lrep_quarrelsome    = 2 #spiteful, cynical, a bit paranoid, possibly hotheaded - eg Robert Graves' Tiberius, some of Charles VI's uncles
 lrep_selfrighteous  = 3 #coldblooded, moralizing, often cruel - eg William the Conqueror, Timur, Octavian, Aurangzeb (although he is arguably upstanding instead, particularly after his accession)
@@ -1267,9 +1298,9 @@ lrep_custodian      = 10 #used for commons, specifically ex-companions. Tries to
 #lreps specific to dependent noblewomen
 lrep_conventional    = 21 #Charlotte York in SATC seasons 1-2, probably most medieval aristocrats
 lrep_adventurous     = 22 #Tomboyish. However, this basically means that she likes to travel and hunt, and perhaps yearn for wider adventures. However, medieval noblewomen who fight are rare, and those that attempt to live independently of a man are rarer still, and best represented by pre-scripted individuals like companions
-lrep_otherworldly    = 23 #Prone to mysticism, romantic.
+lrep_otherworldly    = 23 #Prone to mysticism, romantic. 
 lrep_ambitious       = 24 #Lady Macbeth
-lrep_moralist        = 25 #Equivalent of upstanding or benefactor -- takes nobless oblige, and her traditional role as repository of morality, very seriously. Based loosely on Christine de Pisa
+lrep_moralist        = 25 #Equivalent of upstanding or benefactor -- takes nobless oblige, and her traditional role as repository of morality, very seriously. Based loosely on Christine de Pisa 
 
 #a more complicated system of reputation could include the following...
 
@@ -1284,7 +1315,7 @@ lrep_moralist        = 25 #Equivalent of upstanding or benefactor -- takes noble
 
 courtship_poem_tragic      = 1 #Emphasizes longing, Laila and Majnoon
 courtship_poem_heroic      = 2 #Norse sagas with female heroines
-courtship_poem_comic       = 3 #Emphasis on witty repartee -- Contrasto (Sicilian school satire)
+courtship_poem_comic       = 3 #Emphasis on witty repartee -- Contrasto (Sicilian school satire) 
 courtship_poem_mystic      = 4 #Sufi poetry. Song of Songs
 courtship_poem_allegoric   = 5 #Idealizes woman as a civilizing force -- the Romance of the Rose, Siege of the Castle of Love
 
@@ -1301,7 +1332,7 @@ courtship_poem_allegoric   = 5 #Idealizes woman as a civilizing force -- the Rom
 tutorial_fighters_begin = "trp_tutorial_fighter_1"
 tutorial_fighters_end   = "trp_tutorial_archer_1"
 
-#Walker types:
+#Walker types: 
 walkert_default            = 0
 walkert_needs_money        = 1
 walkert_needs_money_helped = 2
@@ -1399,8 +1430,45 @@ mercenary_troops_end = "trp_mercenaries_end"
 multiplayer_troops_begin = "trp_swadian_crossbowman_multiplayer"
 multiplayer_troops_end = "trp_multiplayer_end"
 
+#INVASION MODE start
+ccoop_companion_sounds_start = "snd_ccoop_spawn_companion_0"
+ccoop_companion_sounds_end = "snd_ccoop_nobleman_taunt"
+
+ccoop_noble_sounds_start = "snd_ccoop_nobleman_taunt"
+ccoop_noble_sounds_end = "snd_ccoop_looter_taunt_0"
+
+ccoop_looter_sounds_start = "snd_ccoop_looter_taunt_0"
+ccoop_looter_sounds_end = "snd_ccoop_bandit_taunt_0"
+
+ccoop_bandit_sounds_start = "snd_ccoop_bandit_taunt_0"
+ccoop_bandit_sounds_end = "snd_ccoop_sea_raider_taunt_0"
+
+ccoop_sea_raider_sounds_start = "snd_ccoop_sea_raider_taunt_0"
+ccoop_sea_raider_sounds_end = "snd_sounds_end"
+
+multiplayer_coop_class_templates_begin = "trp_swadian_crossbowman_multiplayer_coop_tier_1"
+multiplayer_coop_class_templates_end = "trp_coop_faction_troop_templates_end"
+
+multiplayer_coop_companion_equipment_sets_begin = "trp_npc1_1"
+multiplayer_coop_companion_first_equipment_sets_end = "trp_npc1_2"
+multiplayer_coop_companion_equipment_sets_end = "trp_coop_companion_equipment_sets_end"
+
+multiplayer_coop_companion_description_strings_begin = "str_npc1_1"
+#INVASION MODE end
+
 multiplayer_ai_troops_begin = "trp_swadian_crossbowman_multiplayer_ai"
 multiplayer_ai_troops_end = multiplayer_troops_begin
+
+#INVASION MODE START
+captain_multiplayer_troops_begin = "trp_farmer"
+captain_multiplayer_troops_end = "trp_swadian_crossbowman"
+
+captain_multiplayer_new_troops_begin = "trp_swadian_crossbowman"
+captain_multiplayer_new_troops_end = "trp_khergit_lancer"
+
+captain_multiplayer_coop_new_troops_begin = "trp_khergit_lancer"
+captain_multiplayer_coop_new_troops_end = "trp_slaver_chief"
+#INVASION MODE END
 
 multiplayer_scenes_begin = "scn_multi_scene_1"
 multiplayer_scenes_end = "scn_multiplayer_maps_end"
@@ -1585,6 +1653,18 @@ armors_end = "itm_wooden_stick"
 shields_begin = "itm_wooden_shield"
 shields_end = ranged_weapons_begin
 
+#INVASION MODE START
+coop_drops_begin = "itm_javelin_bow"
+coop_drops_end = "itm_javelin_bow_ammo"
+coop_new_items_end = "itm_ccoop_new_items_end"
+
+ccoop_max_num_players = 12
+
+coop_drops_descriptions_begin = "str_javelin_bow"
+coop_drops_descriptions_end = "str_npc1_1"
+#INVASION MODE END
+
+
 # Banner constants
 
 banner_meshes_begin = "mesh_banner_a01"
@@ -1710,6 +1790,20 @@ arena_grand_prize = 250
 price_adjustment = 25 #the percent by which a trade at a center alters price
 
 fire_duration = 4 #fires takes 4 hours
+
+#Viking Conquest patch 1.167 parameters for try_for_prop_instances
+somt_object = 1
+somt_entry = 2
+somt_item = 3
+somt_baggage = 4
+somt_flora = 5
+somt_passage = 6
+somt_spawned_item = 7
+somt_spawned_single_ammo_item = 8
+somt_spawned_unsheathed_item = 9
+somt_shield = 10
+somt_temporary_object = 11
+
 
 #NORMAL ACHIEVEMENTS
 ACHIEVEMENT_NONE_SHALL_PASS = 1,

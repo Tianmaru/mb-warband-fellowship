@@ -1,12 +1,6 @@
-import sys
-sys.dont_write_bytecode = True
-
 from header_common import *
 from module_info import *
 from module_postfx import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def write_python_header(postfx_params_list):
   file = open("./ID_postfx_params.py","w")

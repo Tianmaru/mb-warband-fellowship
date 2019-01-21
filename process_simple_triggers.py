@@ -1,14 +1,8 @@
-import sys
-sys.dont_write_bytecode = True
-
 from module_info import *
 from module_simple_triggers import *
 
 from process_common import *
 from process_operations import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_simple_triggers(variable_list,variable_uses,triggers,tag_uses,quick_strings):
   file = open(export_dir + "simple_triggers.txt","w")
@@ -22,7 +16,7 @@ def save_simple_triggers(variable_list,variable_uses,triggers,tag_uses,quick_str
   file.close()
 
 
-print "exporting simple triggers..."
+print "Exporting simple triggers..."
 variable_uses = []
 variables = load_variables(export_dir,variable_uses)
 tag_uses = load_tag_uses(export_dir)

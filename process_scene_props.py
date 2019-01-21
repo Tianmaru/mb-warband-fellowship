@@ -1,6 +1,3 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 
 from module_info import *
@@ -8,9 +5,6 @@ from module_scene_props import *
 
 from process_common import *
 from process_operations import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_scene_props(variable_list,variable_uses,tag_uses,quick_strings):
   ofile = open(export_dir + "scene_props.txt","w")

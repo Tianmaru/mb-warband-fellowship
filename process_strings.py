@@ -1,15 +1,9 @@
-import sys
-sys.dont_write_bytecode = True
-
 import string
 from header_common import *
 from module_info import *
 from module_strings import *
 
 from process_common import *
-
-# Lav's export_dir tweak
-export_dir = '%s/' % export_dir.replace('\\', '/').rstrip('/')
 
 def save_strings(strings):
   ofile = open(export_dir + "strings.txt","w")
