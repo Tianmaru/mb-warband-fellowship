@@ -901,36 +901,6 @@ scripts = [
     ]),
 
 ### FELLOWSHIP #################################################################
-    # script_fellowship_player2_init_controls
-    # Intializes controls of player 2
-    ("fellowship_player2_init_controls",
-    [
-        (try_begin),
-            (troop_set_face_key_from_current_profile, "trp_player2"), # set face
-        (end_try),
-        (assign, "$gk_p2_move_down", key_down),
-        (assign, "$gk_p2_move_right", key_right),
-        (assign, "$gk_p2_move_left", key_left),
-        (assign, "$gk_p2_move_up", key_up),
-        (assign, "$gk_p2_attack", key_numpad_7),
-        (assign, "$gk_p2_defend", key_numpad_9),
-        (assign, "$gk_p2_shield", key_numpad_minus),
-        (assign, "$gk_p2_switch", key_numpad_plus),
-        (assign, "$gk_p2_look_down", key_numpad_5),
-        (assign, "$gk_p2_look_right", key_numpad_6),
-        (assign, "$gk_p2_look_left", key_numpad_4),
-        (assign, "$gk_p2_look_up", key_numpad_8),
-    ]),
-
-    # script_fellowship_player2_set_face
-    # sets the face of player 2 from current multiplayer profile
-    ("fellowship_player2_set_face",
-    [
-        (try_begin),
-            (troop_set_face_key_from_current_profile, "trp_player2"), # set face
-        (end_try),
-    ]),
-
     # script_fellowship_init
     ("fellowship_init",
     [
@@ -951,6 +921,27 @@ scripts = [
         (troop_set_slot, "trp_player2", slot_troop_original_faction, 0),
         (troop_set_slot, "trp_player2", slot_troop_home_speech_delivered, 1), # Disable player 2 home speech
         (call_script, "script_fellowship_player2_init_controls"),
+    ]),
+
+    # script_fellowship_player2_init_controls
+    # Intializes controls of player 2
+    ("fellowship_player2_init_controls",
+    [
+        (try_begin),
+            (troop_set_face_key_from_current_profile, "trp_player2"), # set face
+        (end_try),
+        (assign, "$gk_p2_move_down", key_down),
+        (assign, "$gk_p2_move_right", key_right),
+        (assign, "$gk_p2_move_left", key_left),
+        (assign, "$gk_p2_move_up", key_up),
+        (assign, "$gk_p2_attack", key_numpad_7),
+        (assign, "$gk_p2_defend", key_numpad_9),
+        (assign, "$gk_p2_shield", key_numpad_minus),
+        (assign, "$gk_p2_switch", key_numpad_plus),
+        (assign, "$gk_p2_look_down", key_numpad_5),
+        (assign, "$gk_p2_look_right", key_numpad_6),
+        (assign, "$gk_p2_look_left", key_numpad_4),
+        (assign, "$gk_p2_look_up", key_numpad_8),
     ]),
 
     #script_fellowship_key_get_name_by_key_code
@@ -1338,6 +1329,25 @@ scripts = [
     ]
     ),
 
+    # script_cf_fellowship_get_player2_agent_no
+    # Gets the agent id of player 2 agent
+    # Input: None
+    # Output: reg0
+    ("cf_fellowship_get_player2_agent_no",
+    [
+        (assign, ":result", -1),
+        (try_for_agents, ":cur_agent"),
+            (eq, ":result", -1),
+            (agent_get_troop_id, ":cur_troop_no", ":cur_agent"),
+            (eq, ":cur_troop_no", "trp_player2"),
+            # apparently horses get the same troop id
+            (agent_is_human, ":cur_agent"),
+            (assign, ":result", ":cur_agent"),
+        (try_end),
+        (assign, reg0, ":result"),
+        (neq, reg0, -1),
+    ]),
+
 # script_cf_fellowship_player2_fallen
 # will pass, if agent of trp_player2 has fallen or main party has no trp_player2
 # will fail, if agent of trp_player2 is still alive
@@ -1346,7 +1356,7 @@ scripts = [
         (assign, ":player2_fallen", 1),
         (try_begin),
         	(main_party_has_troop, "trp_player2"),
-            (call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+            (call_script, "script_cf_fellowship_get_player2_agent_no"),
             (assign, ":player2_no", reg0),
             (agent_is_alive, ":player2_no"),
             (assign, ":player2_fallen", 0),
@@ -1396,39 +1406,39 @@ scripts = [
 # uses positions as vectors and calculate magnitude
 # INPUT: position index a
 # OUTPUT: reg0
-    ("fellowship_vector_magnitude",
-    [
-        (store_script_param_1, ":a"),
-        (call_script, "script_fellowship_vector_dot_product", ":a", ":a"),
-        (convert_to_fixed_point, reg0),
-        (store_sqrt, ":magnitude", reg0),
-        (convert_from_fixed_point, ":magnitude"),
-        (assign, reg0, ":magnitude"),
-    ]),
-
-# script_fellowship_vector_dot_product
-# uses positions as vectors and calculates the dot product
-# INPUT: position index a, position index b
-# OUTPUT: reg0
-    ("fellowship_vector_dot_product",
-    [
-        (store_script_param_1, ":a"),
-        (store_script_param_2, ":b"),
-        (position_get_x, ":a_x", ":a"),
-        (position_get_x, ":b_x", ":b"),
-        (position_get_y, ":a_y", ":a"),
-        (position_get_y, ":b_y", ":b"),
-        (position_get_z, ":a_z", ":a"),
-        (position_get_z, ":b_z", ":b"),
-        (assign, ":dot_product", 0),
-        (store_mul, ":axbx", ":a_x", ":b_x"),
-        (store_mul, ":ayby", ":a_y", ":b_y"),
-        (store_mul, ":azbz", ":a_z", ":b_z"),
-        (val_add, ":dot_product", ":axbx"),
-        (val_add, ":dot_product", ":ayby"),
-        (val_add, ":dot_product", ":azbz"),
-        (assign, reg0, ":dot_product"),
-    ]),
+#     ("fellowship_vector_magnitude",
+#     [
+#         (store_script_param_1, ":a"),
+#         (call_script, "script_fellowship_vector_dot_product", ":a", ":a"),
+#         (convert_to_fixed_point, reg0),
+#         (store_sqrt, ":magnitude", reg0),
+#         (convert_from_fixed_point, ":magnitude"),
+#         (assign, reg0, ":magnitude"),
+#     ]),
+#
+# # script_fellowship_vector_dot_product
+# # uses positions as vectors and calculates the dot product
+# # INPUT: position index a, position index b
+# # OUTPUT: reg0
+#     ("fellowship_vector_dot_product",
+#     [
+#         (store_script_param_1, ":a"),
+#         (store_script_param_2, ":b"),
+#         (position_get_x, ":a_x", ":a"),
+#         (position_get_x, ":b_x", ":b"),
+#         (position_get_y, ":a_y", ":a"),
+#         (position_get_y, ":b_y", ":b"),
+#         (position_get_z, ":a_z", ":a"),
+#         (position_get_z, ":b_z", ":b"),
+#         (assign, ":dot_product", 0),
+#         (store_mul, ":axbx", ":a_x", ":b_x"),
+#         (store_mul, ":ayby", ":a_y", ":b_y"),
+#         (store_mul, ":azbz", ":a_z", ":b_z"),
+#         (val_add, ":dot_product", ":axbx"),
+#         (val_add, ":dot_product", ":ayby"),
+#         (val_add, ":dot_product", ":azbz"),
+#         (assign, reg0, ":dot_product"),
+#     ]),
 ################################################################################
 
   #script_game_get_use_string

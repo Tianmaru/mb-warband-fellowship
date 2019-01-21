@@ -10484,7 +10484,7 @@ presentations = [
         (agent_get_kill_count, reg1, ":player_agent", 1),
         # FELLOWSHIP # add kills of player 2 ###################################
         (try_begin),
-            (call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+            (call_script, "script_cf_fellowship_get_player2_agent_no"),
             (assign, ":player2_no", reg0),
             (agent_get_kill_count, ":player2_kills", ":player2_no", 1),
             (val_add, reg1, ":player2_kills"),
@@ -11920,7 +11920,10 @@ presentations = [
         [
             (presentation_set_duration, 999999),
             (set_fixed_point_multiplier, 1000),
-            (call_script, "script_fellowship_player2_set_face"),
+
+            (try_begin),
+                (troop_set_face_key_from_current_profile, "trp_player2"), # set face
+            (end_try),
 
             (create_text_overlay, reg1,
             "@On your way into the unknown you have met a trusty companion.",
@@ -12089,7 +12092,7 @@ presentations = [
 
     (ti_on_presentation_run,
     [
-        (call_script, "script_cf_get_first_agent_with_troop_id", "trp_player2"),
+        (call_script, "script_cf_fellowship_get_player2_agent_no"),
         (assign, ":player2_no", reg0),
         (store_agent_hit_points, reg1, ":player2_no", 0),
         (overlay_set_val, "$prsnt_fellowship_healthbar_progress", reg1),

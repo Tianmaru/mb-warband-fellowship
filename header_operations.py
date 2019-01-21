@@ -1499,7 +1499,7 @@ add_info_page_note_from_sreg    = 1092 # (add_info_page_note_from_sreg, <info_pa
   # lord on the Troops section, you will see that lord's face and banner. Both
   # face and banner are drawn using tableaus.
 
-cur_item_set_tableau_material                    = 1981  # (cur_item_set_tableu_material, <tableau_material_id>, <instance_code>),
+cur_item_set_tableau_material                    = 1981  # (cur_item_set_tableau_material, <tableau_material_id>, <instance_code>),
                                                          # Can only be used inside ti_on_init_item trigger in module_items.py. Assigns tableau to the item instance. Value of <instance_code> will be passed to tableau code. Commonly used for heraldic armors and shields.
 cur_scene_prop_set_tableau_material              = 1982  # (cur_scene_prop_set_tableau_material, <tableau_material_id>, <instance_code>),
                                                          # Can only be used inside ti_on_init_scene_prop trigger in module_scene_props.py. Assigns tableau to the scene prop instance. Value of <instance_code> will be passed to tableau code. Commonly used for static banners.
@@ -2460,6 +2460,7 @@ agent_set_defend_action                  = 1746  # (agent_set_defend_action, <ag
 
 agent_set_scripted_destination           = 1730  # (agent_set_scripted_destination, <agent_id>, <position>, [auto_set_z_to_ground_level], [no_rethink]),
                                                  # Forces the agent to travel to specified position and stay there until new behavior is set or scripted mode cleared. First optional parameter determines whether the position Z coordinate will be automatically set to ground level (value = 1) or not (value = 0). Second optional parameter added in 1.165 patch, set it to 1 to save resources.
+                                                 # For riders, set the scripted destination of the rider agent instead of the horse
 agent_set_scripted_destination_no_attack = 1748  # (agent_set_scripted_destination_no_attack, <agent_id>, <position>, <auto_set_z_to_ground_level>),
                                                  # Same as above, but the agent will not attack his enemies.
 agent_get_scripted_destination           = 1731  # (agent_get_scripted_destination, <position>, <agent_id>),

@@ -897,7 +897,7 @@ troops = [
 
 # FELLOWSHIP ###################################################################
   ["player2","Player 2","Player 2",tf_hero|tf_unmoveable_in_party_window,0,reserved,fac_commoners,
-  [itm_nomad_vest, itm_nomad_boots, itm_sword_medieval_b_small, itm_tab_shield_small_round_a, itm_throwing_knives],
+  [itm_nomad_vest, itm_nomad_boots, itm_sword_medieval_b_small, itm_tab_shield_small_round_a, itm_throwing_knives, itm_saddle_horse],
    str_7|agi_7|int_7|cha_7|level(1),wp(50),
    knows_weapon_master_1|knows_riding_1|knows_athletics_1|knows_leadership_1|knows_tactics_1,
    0x000000030100300f499d5b391b6db8d300000000001dc2e10000000000000000],

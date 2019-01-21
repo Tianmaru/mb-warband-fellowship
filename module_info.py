@@ -1,7 +1,8 @@
 # Point export_dir to the folder you will be keeping your module
 # Make sure you use forward slashes (/) and NOT backward slashes (\)
+import private
 
-export_dir = "/home/bjarne/.steam/steam/steamapps/common/MountBlade Warband/Modules/Fellowship"
+export_dir = private.export_dir
 
 # Several possible variants for export_dir variable:
 
